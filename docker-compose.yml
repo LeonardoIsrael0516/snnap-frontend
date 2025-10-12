@@ -1,0 +1,213 @@
+version: '3.8'
+
+services:
+  # Banco de dados PostgreSQL principal
+  postgres:
+    image: postgres:15
+    container_name: meulink_postgres
+    environment:
+      POSTGRES_DB: meulink
+      POSTGRES_USER: meulink_user
+      POSTGRES_PASSWORD: meulink_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - meulink_network
+
+  # Banco de dados PostgreSQL para Link AI
+  postgres-ai:
+    image: postgres:15
+    container_name: meulink_postgres_ai
+    environment:
+      POSTGRES_DB: link_ai
+      POSTGRES_USER: link_ai_user
+      POSTGRES_PASSWORD: link_ai_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_ai_data:/var/lib/postgresql/data
+    networks:
+      - meulink_network
+
+  # Banco de dados PostgreSQL para Biolinks
+  postgres-biolink:
+    image: postgres:15
+    container_name: meulink_postgres_biolink
+    environment:
+      POSTGRES_DB: biolink
+      POSTGRES_USER: biolink_user
+      POSTGRES_PASSWORD: biolink_password
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_biolink_data:/var/lib/postgresql/data
+    networks:
+      - meulink_network
+
+  # Banco de dados PostgreSQL para Pagamentos
+  postgres-payments:
+    image: postgres:15
+    container_name: meulink_postgres_payments
+    environment:
+      POSTGRES_DB: payments
+      POSTGRES_USER: payments_user
+      POSTGRES_PASSWORD: payments_pass
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_payments_data:/var/lib/postgresql/data
+    networks:
+      - meulink_network
+
+  # Redis para cache e rate limiting
+  redis:
+    image: redis:7-alpine
+    container_name: meulink_redis
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - meulink_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Backend Next.js (sem funcionalidades de IA)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: meulink_backend
+    environment:
+      - DATABASE_URL=postgresql://meulink_user:meulink_password@postgres:5432/meulink
+      - NEXTAUTH_URL=http://localhost:3001
+      - NEXTAUTH_SECRET=your-secret-key-here
+      - ALLOWED_ORIGINS=http://localhost:8080,http://localhost:3000
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    networks:
+      - meulink_network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  # Microserviço Link AI
+  link-ai:
+    build:
+      context: ./microservices/link-ai
+      dockerfile: Dockerfile
+    container_name: meulink_link_ai
+    environment:
+      - DATABASE_URL=postgresql://link_ai_user:link_ai_password@postgres-ai:5432/link_ai
+      - MAIN_DATABASE_URL=postgresql://meulink_user:meulink_password@postgres:5432/meulink
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-jwt-secret-key-here
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ALLOWED_ORIGINS=http://localhost:8080,http://localhost:3000
+      - PORT=3002
+    ports:
+      - "3002:3002"
+    depends_on:
+      - postgres-ai
+      - redis
+    networks:
+      - meulink_network
+    volumes:
+      - ./microservices/link-ai:/app
+      - /app/node_modules
+
+  # Microserviço Biolink
+  biolink:
+    build:
+      context: ./microservices/biolink
+      dockerfile: Dockerfile
+    container_name: meulink_biolink
+    environment:
+      - DATABASE_URL=postgresql://biolink_user:biolink_password@postgres-biolink:5432/biolink
+      - MAIN_DATABASE_URL=postgresql://meulink_user:meulink_password@postgres:5432/meulink
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-jwt-secret-key-here
+      - ALLOWED_ORIGINS=http://localhost:8080,http://localhost:3000
+      - PORT=3003
+    ports:
+      - "3003:3003"
+    depends_on:
+      - postgres-biolink
+      - redis
+    networks:
+      - meulink_network
+    volumes:
+      - ./microservices/biolink:/app
+      - /app/node_modules
+
+  # Microserviço de Pagamentos
+  payments:
+    build:
+      context: ./microservices/payments
+      dockerfile: Dockerfile
+    container_name: meulink_payments
+    environment:
+      - DATABASE_URL=postgresql://payments_user:payments_pass@postgres-payments:5432/payments
+      - MAIN_DATABASE_URL=postgresql://meulink_user:meulink_password@postgres:5432/meulink
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-jwt-secret-key-here
+      - EFI_SANDBOX=${EFI_SANDBOX:-false}
+      - EFI_CLIENT_ID=${EFI_CLIENT_ID}
+      - EFI_CLIENT_SECRET=${EFI_CLIENT_SECRET}
+      - EFI_PIX_KEY=${EFI_PIX_KEY}
+      - ALLOWED_ORIGINS=http://localhost:8080,http://localhost:3000
+      - PORT=3004
+    ports:
+      - "3004:3004"
+    depends_on:
+      - postgres-payments
+      - redis
+    networks:
+      - meulink_network
+    volumes:
+      - ./microservices/payments:/app
+      - /app/node_modules
+
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: meulink_frontend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:3001/api
+      - VITE_LINK_AI_API_URL=http://localhost:3002/api
+      - VITE_BIOLINK_API_URL=http://localhost:3003/api
+      - VITE_PAYMENTS_API_URL=http://localhost:3004/api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+      - link-ai
+      - biolink
+      - payments
+    networks:
+      - meulink_network
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
+  postgres_ai_data:
+  postgres_biolink_data:
+  postgres_payments_data:
+  redis_data:
+
+networks:
+  meulink_network:
+    driver: bridge

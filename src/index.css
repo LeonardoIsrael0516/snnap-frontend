@@ -1,0 +1,242 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 8% 8%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 8% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 291 64% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 6% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 6% 15%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 12 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 6% 20%;
+    --input: 240 6% 20%;
+    --ring: 291 64% 42%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 240 10% 6%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 291 64% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 6% 12%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 6% 12%;
+    --sidebar-ring: 291 64% 42%;
+
+    /* Instagram Gradient Colors */
+    --gradient-purple: 291 64% 42%;
+    --gradient-pink: 340 75% 53%;
+    --gradient-orange: 33 100% 62%;
+    
+    /* Glow Effects */
+    --glow-primary: 291 64% 42%;
+    --glow-accent: 340 75% 53%;
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  /* Instagram Gradient */
+  .gradient-instagram {
+    background: linear-gradient(135deg, hsl(var(--gradient-purple)) 0%, hsl(var(--gradient-pink)) 50%, hsl(var(--gradient-orange)) 100%);
+  }
+
+  .gradient-instagram-text {
+    background: linear-gradient(135deg, hsl(var(--gradient-purple)) 0%, hsl(var(--gradient-pink)) 50%, hsl(var(--gradient-orange)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Glow Effects */
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 20px hsl(var(--glow-accent) / 0.3);
+  }
+
+  /* Smooth Transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  /* Hover Gradient for Buttons */
+  .hover-gradient {
+    transition: all 0.3s ease;
+  }
+
+  .hover-gradient:hover {
+    background: linear-gradient(135deg, hsl(291 64% 42% / 0.15) 0%, hsl(340 75% 53% / 0.15) 100%) !important;
+    border-color: hsl(291 64% 42% / 0.3) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px hsl(291 64% 42% / 0.15);
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+}
+
+/* CSS responsivo para colunas de links */
+@layer utilities {
+  .biolink-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+  
+  .biolink-grid-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .biolink-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .biolink-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  /* Mobile responsivo */
+  @media (max-width: 640px) {
+    .biolink-grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .biolink-grid-3 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .biolink-grid-2,
+    .biolink-grid-3 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+  }
+  
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+  
+  /* Custom scroll for InspireBox categories */
+  .inspirebox-categories-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    -webkit-overflow-scrolling: touch;  /* iOS smooth scroll */
+    scroll-snap-type: x mandatory;
+  }
+  
+  .inspirebox-categories-scroll::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+  
+  /* Force scroll for mobile categories */
+  .overflow-x-auto, .overflow-x-scroll {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar, .overflow-x-scroll::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  /* Specific fix for InspireBox mobile categories */
+  .md\\:hidden .overflow-x-scroll {
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Force scroll behavior for mobile categories outside ScrollArea */
+  .md\\:hidden .flex.gap-2.overflow-x-auto {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth !important;
+    touch-action: pan-x !important;
+  }
+  
+  /* Ensure cards don't overflow on mobile */
+  @media (max-width: 768px) {
+    .space-y-4 {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: hidden !important;
+    }
+    
+    .space-y-4 > * {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+    
+    /* Force all card content to stay within bounds */
+    .space-y-4 .aspect-video {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    
+    .space-y-4 img, .space-y-4 iframe {
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+  }
+}

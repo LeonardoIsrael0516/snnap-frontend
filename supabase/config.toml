@@ -1,0 +1,4 @@
+project_id = "dlgblvxgonwedwliueze"
+
+[functions.create-page-ai]
+verify_jwt = false
