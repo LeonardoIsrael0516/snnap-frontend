@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: snnap-frontend
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_API_BASE_URL
+        value: https://snnap-backend.onrender.com/api
+      - key: VITE_LINK_AI_API_URL
+        value: https://snnap-link-ai.onrender.com/api
+      - key: VITE_PAYMENTS_API_URL
+        value: https://snnap-payments.onrender.com/api
+      - key: VITE_BIOLINK_API_URL
+        value: https://snnap.com/api
+      - key: VITE_GOOGLE_CLIENT_ID
+        value: 728951604455-kcdkj94g0vp1bmfqgeutf928aen0rd84.apps.googleusercontent.com
+      - key: VITE_EFI_PAYEE_CODE
+        value: your-efi-payee-code
+      - key: VITE_APP_URL
+        value: https://snnap-frontend.onrender.com
+      - key: VITE_APP_NAME
+        value: Snnap
+      - key: VITE_APP_DESCRIPTION
+        value: Plataforma de criação de páginas com IA
+      - key: VITE_REQUEST_TIMEOUT
+        value: 30000
+      - key: VITE_MAX_RETRIES
+        value: 3

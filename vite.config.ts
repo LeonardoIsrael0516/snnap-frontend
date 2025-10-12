@@ -71,5 +71,10 @@ export default defineConfig(({ mode }) => ({
         ? 'your-efi-payee-code'
         : 'test_payee_code'
     ),
+    'import.meta.env.VITE_APP_URL': JSON.stringify(
+      mode === 'production' 
+        ? 'https://snnap-frontend.onrender.com'
+        : 'http://localhost:8080'
+    ),
   },
 }));
