@@ -32,14 +32,17 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    minify: 'terser',
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select'],
+          utils: ['lucide-react', 'clsx', 'tailwind-merge'],
         },
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
   // Variáveis de ambiente para produção
   define: {

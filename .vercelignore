@@ -1,0 +1,35 @@
+# Arquivos desnecessários para o build
+node_modules
+.git
+.env.local
+.env.development
+.env.test
+*.log
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Arquivos de desenvolvimento
+src/**/*.test.ts
+src/**/*.test.tsx
+src/**/*.spec.ts
+src/**/*.spec.tsx
+test/
+tests/
+__tests__/
+cypress/
+e2e/
+
+# Arquivos de documentação
+README.md
+*.md
+docs/
+
+# Arquivos de configuração local
+.env.example
+env.*.example
+setup-env.sh
