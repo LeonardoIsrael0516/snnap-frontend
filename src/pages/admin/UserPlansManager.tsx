@@ -11,7 +11,7 @@ import { Users, Search, Edit, Plus, Minus, Crown, Calendar, Zap, TrendingUp, Ale
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');

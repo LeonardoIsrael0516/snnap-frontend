@@ -72,7 +72,7 @@ const PageAnalytics: React.FC = () => {
       if (dateFrom) params.set('dateFrom', dateFrom.toISOString());
       if (dateTo) params.set('dateTo', dateTo.toISOString());
       
-             const response = await fetch(`http://localhost:3002/api/analytics/stats/${pageId}?${params}`, {
+             const response = await fetch(`${import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api'}/analytics/stats/${pageId}?${params}`, {
                headers: getAuthHeaders(),
              });
       

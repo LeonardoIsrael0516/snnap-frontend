@@ -56,7 +56,7 @@ export default function StorageConfig() {
   const loadConfigs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/storage/config', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/storage/config`, {
         headers: {
           ...(token && { 'Authorization': `Bearer ${token}` })
         }
@@ -84,7 +84,7 @@ export default function StorageConfig() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const url = editingId ? `http://localhost:3001/api/storage/config/${editingId}` : 'http://localhost:3001/api/storage/config';
+      const url = editingId ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/storage/config/${editingId}` : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/storage/config`;
       const method = editingId ? 'PUT' : 'POST';
 
       console.log('🔧 Salvando configuração:', { url, method, formData });
@@ -130,7 +130,7 @@ export default function StorageConfig() {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/storage/test', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/storage/test`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ export default function StorageConfig() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/storage/config/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/storage/config/${id}`, {
         method: 'DELETE',
         headers: {
           ...(token && { 'Authorization': `Bearer ${token}` })

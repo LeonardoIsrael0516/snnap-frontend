@@ -166,7 +166,7 @@ export default function BiolinkEditor() {
     }
     // Abrir direto no microserviço biolink com timestamp para forçar atualização
     const timestamp = Date.now();
-    window.open(`http://localhost:3003/${settings.slug}?v=${timestamp}`, '_blank');
+    window.open(`${import.meta.env.VITE_BIOLINK_API_URL?.replace('/api', '') || 'http://localhost:3003'}/${settings.slug}?v=${timestamp}`, '_blank');
   };
 
   const getBackgroundStyle = () => {

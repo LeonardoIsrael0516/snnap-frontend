@@ -116,7 +116,7 @@ export default function Biolinks() {
               <Card key={biolink.id} className="group hover:border-primary/50 transition-smooth overflow-hidden">
                 <div className="h-32 relative overflow-hidden bg-muted">
                   <iframe 
-                    src={`http://localhost:3003/${biolink.slug}`}
+                    src={`${import.meta.env.VITE_BIOLINK_API_URL?.replace('/api', '') || 'http://localhost:3003'}/${biolink.slug}`}
                     className="absolute inset-0 w-full h-full pointer-events-none scale-50 origin-top-left [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     style={{ width: '200%', height: '200%', overflow: 'hidden' }}
                     title={`Preview de ${biolink.slug}`}
@@ -136,13 +136,13 @@ export default function Biolinks() {
                     <p className="text-xs text-muted-foreground mb-1">{t.biolinks.link}</p>
                     <button 
                       onClick={() => {
-                        navigator.clipboard.writeText(`http://localhost:3003/${biolink.slug}`);
+                        navigator.clipboard.writeText(`${import.meta.env.VITE_BIOLINK_API_URL?.replace('/api', '') || 'http://localhost:3003'}/${biolink.slug}`);
                         toast.success(t.biolinks.linkCopied);
                       }}
                       className="flex items-center gap-2 w-full text-xs font-mono text-primary hover-gradient p-2 rounded-md group"
                     >
                       <span className="truncate flex-1 text-left">
-                        http://localhost:3003/{biolink.slug}
+                        {import.meta.env.VITE_BIOLINK_API_URL?.replace('/api', '') || 'http://localhost:3003'}/{biolink.slug}
                       </span>
                       <Copy className="w-3 h-3 flex-shrink-0 opacity-60 group-hover:opacity-100" />
                     </button>
@@ -158,7 +158,7 @@ export default function Biolinks() {
                       <Pencil className="w-3 h-3 mr-1" />
                       {t.biolinks.editBlock}
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => window.open(`http://localhost:3003/${biolink.slug}`, '_blank')} className="hover-gradient">
+                    <Button variant="outline" size="sm" onClick={() => window.open(`${import.meta.env.VITE_BIOLINK_API_URL?.replace('/api', '') || 'http://localhost:3003'}/${biolink.slug}`, '_blank')} className="hover-gradient">
                       <Eye className="w-3 h-3 mr-1" />
                       {t.biolinks.viewBlock}
                     </Button>
@@ -195,7 +195,7 @@ export default function Biolinks() {
               />
               <p className="text-xs text-muted-foreground">
                 {newSlug.trim() 
-                  ? `Será acessível em: http://localhost:3003/${newSlug}`
+                  ? `Será acessível em: ${import.meta.env.VITE_BIOLINK_API_URL?.replace('/api', '') || 'http://localhost:3003'}/${newSlug}`
                   : t.biolinks.slugGenerated
                 }
               </p>

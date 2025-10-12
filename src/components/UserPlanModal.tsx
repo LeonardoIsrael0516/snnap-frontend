@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Crown, Zap, Globe, Smartphone, Calendar, ShoppingCart, TrendingUp, Package, CreditCard } from "lucide-react";
 import { PaymentCheckoutModal } from "./PaymentCheckoutModal";
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');

@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Try to load biolink from microservice
         try {
-          const BIOLINK_SERVICE_URL = 'http://localhost:3003';
+          const BIOLINK_SERVICE_URL = import.meta.env.VITE_BIOLINK_API_URL?.replace('/api', '') || 'http://localhost:3003';
           const response = await fetch(`${BIOLINK_SERVICE_URL}/${slug}`);
           
           if (response.ok) {

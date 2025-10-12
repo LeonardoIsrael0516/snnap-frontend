@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Key, Check, AlertCircle, Users, Settings, Loader2, Trash2, Database, MessageSquare, FileText } from "lucide-react";
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');

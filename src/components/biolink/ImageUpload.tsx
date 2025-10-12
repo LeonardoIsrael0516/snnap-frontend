@@ -36,7 +36,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
       formData.append('file', file);
 
       // Usar a API do backend principal
-      const response = await fetch('http://localhost:3001/api/storage/upload', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/storage/upload`, {
         method: 'POST',
         body: formData,
         headers: {

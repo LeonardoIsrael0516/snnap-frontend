@@ -28,16 +28,45 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-         define: {
-           'import.meta.env.VITE_PAYMENTS_API_URL': JSON.stringify(
-             mode === 'production' 
-               ? 'https://payments.seudominio.com/api'
-               : 'http://localhost:3004/api'
-           ),
-           'import.meta.env.VITE_EFI_PAYEE_CODE': JSON.stringify(
-             mode === 'production'
-               ? 'seu_payee_code_producao'
-               : 'test_payee_code'
-           ),
-         },
+  // Configurações para produção no Vercel
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
+        },
+      },
+    },
+  },
+  // Variáveis de ambiente para produção
+  define: {
+    'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
+      mode === 'production' 
+        ? 'https://snnap-api.onrender.com/api'
+        : 'http://localhost:3001/api'
+    ),
+    'import.meta.env.VITE_LINK_AI_API_URL': JSON.stringify(
+      mode === 'production' 
+        ? 'https://snnap-ai.onrender.com/api'
+        : 'http://localhost:3002/api'
+    ),
+    'import.meta.env.VITE_PAYMENTS_API_URL': JSON.stringify(
+      mode === 'production' 
+        ? 'https://snnap-pay.onrender.com/api'
+        : 'http://localhost:3004/api'
+    ),
+    'import.meta.env.VITE_BIOLINK_API_URL': JSON.stringify(
+      mode === 'production' 
+        ? 'https://snnap.com/api'
+        : 'http://localhost:3003/api'
+    ),
+    'import.meta.env.VITE_EFI_PAYEE_CODE': JSON.stringify(
+      mode === 'production'
+        ? 'your-efi-payee-code'
+        : 'test_payee_code'
+    ),
+  },
 }));
