@@ -45,17 +45,17 @@ export default defineConfig(({ mode }) => ({
   define: {
     'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
       mode === 'production' 
-        ? 'https://snnap-api.onrender.com/api'
+        ? 'https://snnap-backend.onrender.com/api'
         : 'http://localhost:3001/api'
     ),
     'import.meta.env.VITE_LINK_AI_API_URL': JSON.stringify(
       mode === 'production' 
-        ? 'https://snnap-ai.onrender.com/api'
+        ? 'https://snnap-link-ai.onrender.com/api'
         : 'http://localhost:3002/api'
     ),
     'import.meta.env.VITE_PAYMENTS_API_URL': JSON.stringify(
       mode === 'production' 
-        ? 'https://snnap-pay.onrender.com/api'
+        ? 'https://snnap-payments.onrender.com/api'
         : 'http://localhost:3004/api'
     ),
     'import.meta.env.VITE_BIOLINK_API_URL': JSON.stringify(
