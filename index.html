@@ -26,5 +26,23 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- SPA Routing Fallback -->
+    <script>
+      // Fallback para SPA routing se o servidor não suportar
+      if (window.location.pathname !== '/' && !window.location.pathname.startsWith('/api/')) {
+        // Verificar se é uma rota do React Router
+        const validRoutes = ['/link-ai', '/biolinks', '/admin', '/login', '/register', '/dashboard'];
+        const currentPath = window.location.pathname;
+        
+        if (validRoutes.some(route => currentPath.startsWith(route)) || currentPath.includes('-')) {
+          // É uma rota válida do SPA, manter como está
+          console.log('SPA route detected:', currentPath);
+        } else {
+          // Redirecionar para home se não for uma rota válida
+          window.location.replace('/');
+        }
+      }
+    </script>
   </body>
 </html>

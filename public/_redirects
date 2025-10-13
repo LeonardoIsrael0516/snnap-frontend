@@ -1,5 +1,12 @@
 # SPA routing for React Router
-/*    /index.html   200
+# Redirect all non-API routes to index.html
+/link-ai*    /index.html   200
+/biolinks*   /index.html   200
+/admin*      /index.html   200
+/login       /index.html   200
+/register    /index.html   200
+/dashboard*  /index.html   200
+/*           /index.html   200
 
 # API routes should not be redirected
-/api/*   404
+/api/*      404
