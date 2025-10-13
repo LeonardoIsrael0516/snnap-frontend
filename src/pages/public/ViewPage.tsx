@@ -166,11 +166,9 @@ document.addEventListener('DOMContentLoaded', function() {
           const aiPage = await getPageBySlug(slug);
           
           if (aiPage) {
-            setPageType('ai');
-            setPageId(aiPage.id);
-            setHtml(aiPage.html_content);
-            setPageData(aiPage); // Salvar dados completos da página
-            setIsLoading(false);
+            // AI page encontrada - redirecionar para o microserviço link-ai
+            const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'https://snnap-link-ai.onrender.com';
+            window.location.href = `${LINK_AI_URL}/${slug}`;
             return;
           }
         } catch (aiError) {
