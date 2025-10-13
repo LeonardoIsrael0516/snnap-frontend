@@ -512,13 +512,9 @@ export default function LinkAI() {
                     </Button>
                     
                     <Button variant="outline" size="sm" onClick={() => {
-                      // Em produção, usar URL relativa (Nginx roteia)
-                      // Em desenvolvimento, usar URL completa do microserviço
-                      const isDev = import.meta.env.DEV;
-                      const url = isDev 
-                        ? `${import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'http://localhost:3002'}/${link.slug}`
-                        : `/${link.slug}`;
-                      window.open(url, '_blank');
+                      // Sempre usar URL completa do microserviço link-ai
+                      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'https://snnap-link-ai.onrender.com';
+                      window.open(`${LINK_AI_URL}/${link.slug}`, '_blank');
                     }} className="hover-gradient flex-shrink-0">
                       <Eye className="w-3 h-3 mr-1" />
                       <span className="hidden sm:inline">{t.linkAI.viewPage}</span>

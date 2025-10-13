@@ -1917,7 +1917,10 @@ IMPORTANTE: O usuário fornecerá o HTML atual da página. Use-o como base e fa�
                   Editar Página
                 </Button>
                 <Button
-                  onClick={() => window.open(`/${newPageData.slug}`, '_blank')}
+                  onClick={() => {
+                    const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'https://snnap-link-ai.onrender.com';
+                    window.open(`${LINK_AI_URL}/${newPageData.slug}`, '_blank');
+                  }}
                   className="w-full h-10 sm:h-11 text-sm sm:text-base"
                   variant="outline"
                 >
