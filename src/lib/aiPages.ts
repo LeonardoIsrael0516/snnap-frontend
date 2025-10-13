@@ -505,9 +505,13 @@ export const streamCreatePage = async ({ messages, onDelta, onDone, onError, pag
 
     try {
       while (true) {
+        console.log('📥 Lendo chunk do stream...');
         const { done, value } = await reader.read();
         
-        if (done) break;
+        if (done) {
+          console.log('✅ Stream finalizado pelo servidor');
+          break;
+        }
         
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
@@ -517,6 +521,7 @@ export const streamCreatePage = async ({ messages, onDelta, onDone, onError, pag
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.slice(6));
+              console.log('📦 Dados recebidos do stream:', data.type, data);
               
               if (data.type === 'start') {
                 onDelta(data.message, false);
