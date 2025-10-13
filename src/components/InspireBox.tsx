@@ -144,6 +144,7 @@ export function InspireBox({ open, onOpenChange, onImportTemplate }: InspireBoxP
       const url = `${import.meta.env.VITE_API_BASE_URL}/templates/${templateId}/import`;
       console.log('🔍 URL da requisição:', url);
       console.log('🔍 VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
+      console.log('🔍 VITE_LINK_AI_API_URL:', import.meta.env.VITE_LINK_AI_API_URL);
       
       const response = await fetch(url, {
         method: 'POST',
