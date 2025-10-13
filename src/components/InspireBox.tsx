@@ -158,6 +158,7 @@ export function InspireBox({ open, onOpenChange, onImportTemplate }: InspireBoxP
       console.log('🔍 Response status:', response.status);
       console.log('🔍 Response headers:', response.headers);
       console.log('🔍 Response ok:', response.ok);
+      console.log('🔍 Response URL:', response.url);
       
       if (response.ok) {
         const data = await response.json();
