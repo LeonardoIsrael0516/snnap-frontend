@@ -144,6 +144,7 @@ export function InspireBox({ open, onOpenChange, onImportTemplate }: InspireBoxP
       const url = `${import.meta.env.VITE_API_BASE_URL}/templates/${templateId}/import`;
       console.log('🔍 URL da requisição:', url);
       console.log('🔍 VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
+      console.log('🔍 Template ID:', templateId);
       console.log('🔍 VITE_LINK_AI_API_URL:', import.meta.env.VITE_LINK_AI_API_URL);
       
       const response = await fetch(url, {
@@ -161,7 +162,18 @@ export function InspireBox({ open, onOpenChange, onImportTemplate }: InspireBoxP
       console.log('🔍 Response URL:', response.url);
       
       if (response.ok) {
-        const data = await response.json();
+        const responseText = await response.text();
+        console.log('🔍 Response text:', responseText);
+        
+        let data;
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('❌ Erro ao fazer parse da resposta JSON:', parseError);
+          console.error('❌ Response text que causou erro:', responseText);
+          throw new Error(`Resposta inválida do servidor: ${responseText.substring(0, 100)}...`);
+        }
+        
         console.log('🔍 Response data:', data);
         toast.success("✅ Template importado com sucesso!", {
           description: `A página "${title}" foi criada na sua conta`
