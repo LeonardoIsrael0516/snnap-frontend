@@ -498,7 +498,7 @@ export default function LinkAI() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <BarChart3 className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm font-medium">{link.views.toLocaleString()} views</span>
+                      <span className="text-sm font-medium">{(link.views || 0).toLocaleString()} views</span>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">

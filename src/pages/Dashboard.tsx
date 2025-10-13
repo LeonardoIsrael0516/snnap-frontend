@@ -152,7 +152,7 @@ export default function Dashboard() {
                 <Eye className="w-4 h-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold mb-1">{stats.totalViews.toLocaleString()}</div>
+                <div className="text-3xl font-bold mb-1">{(stats.totalViews || 0).toLocaleString()}</div>
                 <p className="text-xs text-muted-foreground">
                   Total de visualizações em todas as páginas
                 </p>
