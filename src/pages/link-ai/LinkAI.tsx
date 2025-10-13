@@ -451,13 +451,9 @@ export default function LinkAI() {
       {!isLoading && !importing && links.length > 0 && <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-24 md:pb-6">
             {links.map(link => {
-              // Em produção com Nginx, usar caminho relativo
-              // Em desenvolvimento, usar URL completa do microserviço
-              const isDevelopment = import.meta.env.DEV;
-              const linkAiUrl = isDevelopment 
-                ? (import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'http://localhost:3002')
-                : ''; // Em produção, Nginx roteia automaticamente
-              const previewUrl = `${linkAiUrl}/${link.slug}`;
+              // Sempre usar URL completa do microserviço link-ai para preview
+              const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'https://snnap-link-ai.onrender.com';
+              const previewUrl = `${LINK_AI_URL}/${link.slug}`;
               
               return <Card key={link.id} className="group hover:border-primary/50 transition-smooth overflow-hidden">
                 <div className="h-32 relative overflow-hidden bg-muted">
