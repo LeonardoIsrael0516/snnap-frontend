@@ -141,7 +141,8 @@ export const aiPagesService = {
   async getById(id: string): Promise<AIPage> {
     try {
       const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/ai-pages/${id}`, {
+      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+      const response = await fetch(`${LINK_AI_URL}/ai-pages/${id}`, {
         headers,
       });
       
@@ -165,14 +166,15 @@ export const aiPagesService = {
            }
 
            try {
-             console.log('🔄 aiPagesService.create - Enviando requisição para:', `${API_BASE_URL}/ai-pages`);
+             const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+             console.log('🔄 aiPagesService.create - Enviando requisição para:', `${LINK_AI_URL}/ai-pages`);
              
              // Adicionar timeout de 60 segundos (IA pode demorar)
              const controller = new AbortController();
              const timeoutId = setTimeout(() => controller.abort(), 60000);
              
              const headers = await getAuthHeaders();
-             const response = await fetch(`${API_BASE_URL}/ai-pages`, {
+             const response = await fetch(`${LINK_AI_URL}/ai-pages`, {
                method: 'POST',
                headers,
                body: JSON.stringify(data),
@@ -243,10 +245,11 @@ export const aiPagesService = {
         directCreation: true,
       };
 
-      console.log('🔄 aiPagesService.createWithHTML - Enviando requisição para:', `${API_BASE_URL}/ai-pages`);
+      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+      console.log('🔄 aiPagesService.createWithHTML - Enviando requisição para:', `${LINK_AI_URL}/ai-pages`);
       
       const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/ai-pages`, {
+      const response = await fetch(`${LINK_AI_URL}/ai-pages`, {
         method: 'POST',
         headers,
         body: JSON.stringify(createData),
@@ -341,11 +344,12 @@ export const aiPagesService = {
         convertedUpdates.customDomainId = updatesAny.customDomainId;
       }
 
-      console.log('🔄 aiPagesService.update - Enviando requisição para:', `${API_BASE_URL}/ai-pages/${id}`);
+      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+      console.log('🔄 aiPagesService.update - Enviando requisição para:', `${LINK_AI_URL}/ai-pages/${id}`);
       console.log('🔄 aiPagesService.update - Dados convertidos:', convertedUpdates);
       
       const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/ai-pages/${id}`, {
+      const response = await fetch(`${LINK_AI_URL}/ai-pages/${id}`, {
         method: 'PUT',
         headers,
         body: JSON.stringify(convertedUpdates),
@@ -375,7 +379,8 @@ export const aiPagesService = {
   async delete(id: string): Promise<void> {
     try {
       const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/ai-pages/${id}`, {
+      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+      const response = await fetch(`${LINK_AI_URL}/ai-pages/${id}`, {
         method: 'DELETE',
         headers,
       });
