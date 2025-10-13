@@ -199,7 +199,11 @@ export function FeaturedTemplates({ onImportTemplate, onOpenInspireBox }: Featur
       
       const token = await getValidToken();
       
-      const response = await fetch(`/api/templates/${templateId}/import`, {
+      const url = `${import.meta.env.VITE_API_BASE_URL}/templates/${templateId}/import`;
+      console.log('🔍 URL da requisição:', url);
+      console.log('🔍 VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -208,18 +212,34 @@ export function FeaturedTemplates({ onImportTemplate, onOpenInspireBox }: Featur
         body: JSON.stringify({ title, slug })
       });
 
+      console.log('🔍 Response status:', response.status);
+      console.log('🔍 Response headers:', response.headers);
+      console.log('🔍 Response ok:', response.ok);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('🔍 Response data:', data);
         toast.success("✅ Template importado com sucesso!", {
           description: `A página "${title}" foi criada na sua conta`
         });
         // Chamar callback para atualizar a lista de páginas
         await onImportTemplate(templateId);
       } else {
-        const error = await response.json();
-        toast.error("❌ Erro ao importar template", {
-          description: error.error || "Tente novamente mais tarde"
-        });
+        console.log('🔍 Error response status:', response.status);
+        const responseText = await response.text();
+        console.log('🔍 Error response text:', responseText);
+        
+        try {
+          const error = JSON.parse(responseText);
+          toast.error("❌ Erro ao importar template", {
+            description: error.error || "Tente novamente mais tarde"
+          });
+        } catch (parseError) {
+          console.error('🔍 Erro ao fazer parse do JSON:', parseError);
+          toast.error("❌ Erro ao importar template", {
+            description: "Resposta inválida do servidor"
+          });
+        }
       }
     } catch (error) {
       console.error("Erro ao importar template:", error);
