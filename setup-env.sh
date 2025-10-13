@@ -23,3 +23,4 @@ echo "2. Fazer build: npm run build"
 echo "3. Configurar no Vercel Dashboard"
 
 
+

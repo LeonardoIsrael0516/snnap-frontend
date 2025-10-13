@@ -104,12 +104,13 @@ const getAuthHeaders = async () => {
 
 const checkAPIConfiguration = async (): Promise<boolean> => {
   try {
-    // Usar endpoint correto /health (não /api/ai-pages/health)
-    const healthUrl = API_BASE_URL.replace('/api', '') + '/health';
-    const response = await fetch(healthUrl);
+    // Usar endpoint correto /api/settings/check
+    const response = await fetch(`${API_BASE_URL}/settings/check`);
     
     if (response.ok) {
-      return true;
+      const data = await response.json();
+      console.log('🔧 API Config check result:', data);
+      return data.hasAPIConfig || false;
     }
     return false;
   } catch (error) {
