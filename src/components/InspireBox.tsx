@@ -104,7 +104,7 @@ export function InspireBox({ open, onOpenChange, onImportTemplate }: InspireBoxP
   const handleImportTemplate = async (templateId: string, templateTitle: string) => {
     try {
       // Verificar créditos antes de importar (opcional)
-      const creditsResponse = await fetch(`/api/user/check-credits?required=1&action=importação`, {
+      const creditsResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/check-credits?required=1&action=importação`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
