@@ -458,14 +458,14 @@ export const streamCreatePage = async ({ messages, onDelta, onDone, onError, pag
 
     // Use real streaming endpoint from Link AI
     const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
-    console.log('📤 Enviando requisição para:', `${LINK_AI_URL}/stream`);
+    console.log('📤 Enviando requisição para:', `${LINK_AI_URL}/ai-pages/stream`);
     console.log('📤 Dados completos:', JSON.stringify(createData, null, 2));
     console.log('📤 Dados:', createData);
     console.log('📤 Tem pageId?', !!pageId, 'Valor:', pageId);
     
     const headers = await getAuthHeaders();
     console.log('📤 Headers obtidos');
-    const response = await fetch(`${LINK_AI_URL}/stream`, {
+    const response = await fetch(`${LINK_AI_URL}/ai-pages/stream`, {
       method: 'POST',
       headers,
       body: JSON.stringify(createData),
