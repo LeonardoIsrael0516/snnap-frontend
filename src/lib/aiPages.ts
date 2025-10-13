@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_LINK_AI_API_URL || '/microservice';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 export interface AIPage {
   id: string;

@@ -107,7 +107,7 @@ export default function LinkAI() {
   // Função para verificar créditos antes de realizar ações
   const checkCreditsBeforeAction = async (requiredCredits: number, action: 'criação' | 'edição' | 'importação'): Promise<boolean> => {
     try {
-      const response = await fetch(`/api/user/check-credits?required=${requiredCredits}&action=${action}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/check-credits?required=${requiredCredits}&action=${action}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'

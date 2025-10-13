@@ -295,7 +295,7 @@ export default function TemplateManager() {
 
     try {
       const token = await getValidToken();
-      const response = await fetch(`/api/admin/template-categories/${categoryId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/admin/template-categories/${categoryId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -320,7 +320,7 @@ export default function TemplateManager() {
 
     try {
       const token = await getValidToken();
-      const response = await fetch(`/api/admin/templates/${templateId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/admin/templates/${templateId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
