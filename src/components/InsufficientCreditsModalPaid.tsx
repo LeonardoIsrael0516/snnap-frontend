@@ -76,7 +76,7 @@ export default function InsufficientCreditsModalPaid({
 
   const loadPlans = async () => {
     try {
-      const response = await fetch('/api/plans');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/plans`);
       if (response.ok) {
         const data = await response.json();
         // Filtrar apenas planos ativos e excluir o plano Free
@@ -89,7 +89,7 @@ export default function InsufficientCreditsModalPaid({
 
   const loadCreditPackages = async () => {
     try {
-      const response = await fetch('/api/credit-packages');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/credit-packages`);
       if (response.ok) {
         const data = await response.json();
         setCreditPackages(data.filter((pkg: CreditPackage) => pkg.isActive));

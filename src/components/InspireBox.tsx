@@ -61,7 +61,7 @@ export function InspireBox({ open, onOpenChange, onImportTemplate }: InspireBoxP
   const loadTemplates = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/templates');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/templates`);
       if (response.ok) {
         const data = await response.json();
         setTemplates(data);
@@ -79,7 +79,7 @@ export function InspireBox({ open, onOpenChange, onImportTemplate }: InspireBoxP
 
   const loadCategories = async () => {
     try {
-      const response = await fetch('/api/template-categories');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/template-categories`);
       if (response.ok) {
         const data = await response.json();
         setCategories(data);

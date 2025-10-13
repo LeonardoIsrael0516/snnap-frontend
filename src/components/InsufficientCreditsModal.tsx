@@ -78,7 +78,7 @@ export default function InsufficientCreditsModal({
 
   const loadUserData = async () => {
     try {
-      const response = await fetch('/api/user/permissions', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/permissions`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -103,7 +103,7 @@ export default function InsufficientCreditsModal({
 
   const loadPlans = async () => {
     try {
-      const response = await fetch('/api/plans');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/plans`);
       if (response.ok) {
         const data = await response.json();
         // Filtrar apenas planos ativos e excluir o plano Free
@@ -116,7 +116,7 @@ export default function InsufficientCreditsModal({
 
   const loadCreditPackages = async () => {
     try {
-      const response = await fetch('/api/credit-packages');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/credit-packages`);
       if (response.ok) {
         const data = await response.json();
         setCreditPackages(data.filter((pkg: CreditPackage) => pkg.isActive));

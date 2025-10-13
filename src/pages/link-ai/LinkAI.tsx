@@ -50,7 +50,7 @@ export default function LinkAI() {
   // Carregar dados do plano do usuário
   const loadUserPlan = async () => {
     try {
-      const response = await fetch('/api/user/permissions', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/permissions`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'

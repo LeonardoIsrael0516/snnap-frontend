@@ -61,7 +61,7 @@ export default function InsufficientCreditsModalFree({
 
   const loadPlans = async () => {
     try {
-      const response = await fetch('/api/plans');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/plans`);
       if (response.ok) {
         const data = await response.json();
         // Filtrar apenas planos ativos e excluir o plano Free
