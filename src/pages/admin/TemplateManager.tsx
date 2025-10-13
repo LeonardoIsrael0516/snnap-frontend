@@ -163,7 +163,8 @@ export default function TemplateManager() {
   const loadTemplates = async () => {
     try {
       const token = await getValidToken();
-      const response = await fetch('/api/admin/templates', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+      const response = await fetch(`${API_BASE_URL}/admin/templates`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -184,7 +185,8 @@ export default function TemplateManager() {
   const loadCategories = async () => {
     try {
       const token = await getValidToken();
-      const response = await fetch('/api/admin/template-categories', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+      const response = await fetch(`${API_BASE_URL}/admin/template-categories`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -202,7 +204,8 @@ export default function TemplateManager() {
   const loadAiPages = async () => {
     try {
       const token = await getValidToken();
-      const response = await fetch('/api/ai-pages', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+      const response = await fetch(`${API_BASE_URL}/ai-pages`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -223,7 +226,8 @@ export default function TemplateManager() {
   const handleCreateCategory = async () => {
     try {
       const token = await getValidToken();
-      const response = await fetch('/api/admin/template-categories', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+      const response = await fetch(`${API_BASE_URL}/admin/template-categories`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -250,7 +254,8 @@ export default function TemplateManager() {
   const handleCreateTemplate = async () => {
     try {
       const token = await getValidToken();
-      const response = await fetch('/api/admin/templates', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+      const response = await fetch(`${API_BASE_URL}/admin/templates`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
