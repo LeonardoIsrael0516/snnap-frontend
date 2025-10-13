@@ -1,8 +1,10 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { debugEnvVars, validateApiUrls } from "@/utils/debug";
 import { Layout } from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
@@ -26,7 +28,14 @@ import PaymentTest from "./pages/PaymentTest";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  // Debug environment variables
+  React.useEffect(() => {
+    debugEnvVars();
+    validateApiUrls();
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -174,6 +183,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
