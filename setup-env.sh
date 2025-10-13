@@ -21,3 +21,4 @@ echo "🚀 Agora você pode:"
 echo "1. Testar localmente: npm run dev"
 echo "2. Fazer build: npm run build"
 echo "3. Configurar no Vercel Dashboard"
+

@@ -37,3 +37,4 @@ export function validateApiUrls() {
   console.log('✅ VITE_API_BASE_URL está correta:', apiBaseUrl);
   return true;
 }
+
