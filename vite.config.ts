@@ -9,12 +9,12 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       '/api': {
-        target: 'https://snnap-backend.onrender.com/api',
+        target: process.env.VITE_API_BASE_URL || 'http://localhost:3001/api',
         changeOrigin: true,
         secure: false,
       },
       '/microservice': {
-        target: 'http://localhost:3002',
+        target: process.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/microservice/, ''),
@@ -43,37 +43,25 @@ export default defineConfig(({ mode }) => ({
     },
     chunkSizeWarningLimit: 1000,
   },
-  // Variáveis de ambiente para produção
+  // Variáveis de ambiente - usar variáveis de ambiente ou fallback para desenvolvimento
   define: {
     'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
-      mode === 'production' 
-        ? 'https://snnap-backend.onrender.com/api'
-        : 'http://localhost:3001/api'
+      process.env.VITE_API_BASE_URL || (mode === 'production' ? 'https://snnap-backend.onrender.com/api' : 'http://localhost:3001/api')
     ),
     'import.meta.env.VITE_LINK_AI_API_URL': JSON.stringify(
-      mode === 'production' 
-        ? 'https://snnap-link-ai.onrender.com/api'
-        : 'http://localhost:3002/api'
+      process.env.VITE_LINK_AI_API_URL || (mode === 'production' ? 'https://snnap-link-ai.onrender.com/api' : 'http://localhost:3002/api')
     ),
     'import.meta.env.VITE_PAYMENTS_API_URL': JSON.stringify(
-      mode === 'production' 
-        ? 'https://snnap-payments.onrender.com/api'
-        : 'http://localhost:3004/api'
+      process.env.VITE_PAYMENTS_API_URL || (mode === 'production' ? 'https://snnap-payments.onrender.com/api' : 'http://localhost:3004/api')
     ),
     'import.meta.env.VITE_BIOLINK_API_URL': JSON.stringify(
-      mode === 'production' 
-        ? 'https://snnap.com/api'
-        : 'http://localhost:3003/api'
+      process.env.VITE_BIOLINK_API_URL || (mode === 'production' ? 'https://snnap.com/api' : 'http://localhost:3003/api')
     ),
     'import.meta.env.VITE_EFI_PAYEE_CODE': JSON.stringify(
-      mode === 'production'
-        ? 'your-efi-payee-code'
-        : 'test_payee_code'
+      process.env.VITE_EFI_PAYEE_CODE || (mode === 'production' ? 'your-efi-payee-code' : 'test_payee_code')
     ),
     'import.meta.env.VITE_APP_URL': JSON.stringify(
-      mode === 'production' 
-        ? 'https://snnap-frontend.onrender.com'
-        : 'http://localhost:8080'
+      process.env.VITE_APP_URL || (mode === 'production' ? 'https://snnap-frontend.onrender.com' : 'http://localhost:8080')
     ),
   },
 }));
