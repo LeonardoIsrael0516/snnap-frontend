@@ -1,9 +1,13 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }) => {
+  // Carregar variáveis de ambiente
+  const env = loadEnv(mode, process.cwd(), '');
+  
+  return {
   server: {
     host: "::",
     port: 8080,
@@ -60,8 +64,15 @@ export default defineConfig(({ mode }) => ({
     'import.meta.env.VITE_EFI_PAYEE_CODE': JSON.stringify(
       process.env.VITE_EFI_PAYEE_CODE || (mode === 'production' ? 'your-efi-payee-code' : 'test_payee_code')
     ),
+    'import.meta.env.VITE_EFI_ACCOUNT_CODE': JSON.stringify(
+      env.VITE_EFI_ACCOUNT_CODE || ''
+    ),
+    'import.meta.env.VITE_EFI_SANDBOX': JSON.stringify(
+      env.VITE_EFI_SANDBOX || 'true'
+    ),
     'import.meta.env.VITE_APP_URL': JSON.stringify(
-      process.env.VITE_APP_URL || (mode === 'production' ? 'https://snnap-frontend.onrender.com' : 'http://localhost:8080')
+      process.env.VITE_APP_URL || (mode === 'production' ? 'https://snnap-frontend.onrender.com' : 'http://localhost:8081')
     ),
   },
-}));
+  };
+});

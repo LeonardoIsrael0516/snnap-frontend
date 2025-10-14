@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Crown, Zap, Globe, Smartphone, Calendar, ShoppingCart, TrendingUp, Package, CreditCard } from "lucide-react";
-import { PaymentCheckoutModal } from "./PaymentCheckoutModal";
+import ModernCheckout from "./ModernCheckout";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
@@ -452,26 +452,26 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
 
       {/* Modal de Checkout */}
       {selectedPlan && (
-        <PaymentCheckoutModal
-          open={checkoutOpen}
+        <ModernCheckout
+          isOpen={checkoutOpen}
           onClose={() => setCheckoutOpen(false)}
-          type="plan"
+          type="PLAN_SUBSCRIPTION"
           referenceId={selectedPlan.id}
           amount={selectedPlan.price}
-          description={`Assinatura ${selectedPlan.name} - ${selectedPlan.description || 'Plano premium'}`}
-          onSuccess={handleCheckoutSuccess}
+          title={`Assinatura ${selectedPlan.name}`}
+          description={selectedPlan.description || 'Plano premium'}
         />
       )}
 
       {selectedPackage && (
-        <PaymentCheckoutModal
-          open={checkoutOpen}
+        <ModernCheckout
+          isOpen={checkoutOpen}
           onClose={() => setCheckoutOpen(false)}
-          type="package"
+          type="CREDIT_PACKAGE"
           referenceId={selectedPackage.id}
           amount={selectedPackage.price}
-          description={`${selectedPackage.name} - ${selectedPackage.description || 'Pacote de créditos'}`}
-          onSuccess={handleCheckoutSuccess}
+          title={selectedPackage.name}
+          description={selectedPackage.description || 'Pacote de créditos'}
         />
       )}
     </Dialog>

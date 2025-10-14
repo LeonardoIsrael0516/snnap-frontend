@@ -38,3 +38,4 @@ VITE_MAX_RETRIES = 3
 
 ## 📝 NOTA IMPORTANTE
 O Vite precisa das variáveis de ambiente durante o **build time**, não no runtime. Por isso é essencial configurá-las no painel do Render.
+
