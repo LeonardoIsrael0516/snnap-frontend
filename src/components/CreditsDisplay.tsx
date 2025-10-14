@@ -185,8 +185,8 @@ export default function CreditsDisplay() {
           </div>
         </div>
 
-        {/* Low Credits Warning */}
-        {permissions.credits.available < 5 && (
+        {/* Low Credits Warning - apenas para planos pagos */}
+        {permissions.credits.available < 5 && permissions.plan?.name !== 'Free' && (
           <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
             <p className="text-sm font-medium text-yellow-700 dark:text-yellow-400">
               ⚠️ Créditos baixos!
