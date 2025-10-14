@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import CaktoCheckoutModal from "./CaktoCheckoutModal";
+import LoadingPaymentModal from "./LoadingPaymentModal";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
@@ -71,6 +72,7 @@ export default function InsufficientCreditsModalPaid({
   const [creditPackages, setCreditPackages] = useState<CreditPackage[]>([]);
   const [loading, setLoading] = useState(false);
   const [caktoModalOpen, setCaktoModalOpen] = useState(false);
+  const [loadingOpen, setLoadingOpen] = useState(false);
   const [selectedCheckoutUrl, setSelectedCheckoutUrl] = useState<string>('');
 
   // Carregar dados
@@ -110,7 +112,13 @@ export default function InsufficientCreditsModalPaid({
     const plan = plans.find(p => p.id === planId);
     if (plan?.caktoCheckoutUrl) {
       setSelectedCheckoutUrl(plan.caktoCheckoutUrl);
-      setCaktoModalOpen(true);
+      setLoadingOpen(true);
+      
+      // Simular carregamento por 2 segundos
+      setTimeout(() => {
+        setLoadingOpen(false);
+        setCaktoModalOpen(true);
+      }, 2000);
     } else {
       // Fallback para o método antigo se não tiver URL da Cakto
       if (onPlanSelected) {
@@ -124,7 +132,13 @@ export default function InsufficientCreditsModalPaid({
     const pkg = creditPackages.find(p => p.id === packageId);
     if (pkg?.caktoCheckoutUrl) {
       setSelectedCheckoutUrl(pkg.caktoCheckoutUrl);
-      setCaktoModalOpen(true);
+      setLoadingOpen(true);
+      
+      // Simular carregamento por 2 segundos
+      setTimeout(() => {
+        setLoadingOpen(false);
+        setCaktoModalOpen(true);
+      }, 2000);
     } else {
       // Fallback para o método antigo se não tiver URL da Cakto
       if (onCreditsPurchased) {
@@ -362,6 +376,13 @@ export default function InsufficientCreditsModalPaid({
         // Recarregar página para atualizar créditos/plano
         window.location.reload();
       }}
+    />
+
+    {/* Modal de carregamento */}
+    <LoadingPaymentModal
+      open={loadingOpen}
+      onClose={() => setLoadingOpen(false)}
+      type="credits"
     />
     </>
   );

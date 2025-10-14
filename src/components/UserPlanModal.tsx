@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Crown, Zap, Globe, Smartphone, Calendar, ShoppingCart, TrendingUp, Package, CreditCard } from "lucide-react";
 import CaktoCheckoutModal from "./CaktoCheckoutModal";
+import LoadingPaymentModal from "./LoadingPaymentModal";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
@@ -77,6 +78,7 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("current");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [loadingOpen, setLoadingOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedPackage, setSelectedPackage] = useState<CreditPackage | null>(null);
 
@@ -161,12 +163,24 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
 
   const handleUpgradePlan = (plan: Plan) => {
     setSelectedPlan(plan);
-    setCheckoutOpen(true);
+    setLoadingOpen(true);
+    
+    // Simular carregamento por 2 segundos
+    setTimeout(() => {
+      setLoadingOpen(false);
+      setCheckoutOpen(true);
+    }, 2000);
   };
 
   const handleBuyCredits = (package_: CreditPackage) => {
     setSelectedPackage(package_);
-    setCheckoutOpen(true);
+    setLoadingOpen(true);
+    
+    // Simular carregamento por 2 segundos
+    setTimeout(() => {
+      setLoadingOpen(false);
+      setCheckoutOpen(true);
+    }, 2000);
   };
 
   const handleCheckoutSuccess = () => {
@@ -478,6 +492,13 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
           }}
         />
       )}
+
+      {/* Modal de carregamento */}
+      <LoadingPaymentModal
+        open={loadingOpen}
+        onClose={() => setLoadingOpen(false)}
+        type={selectedPlan ? 'plan' : 'credits'}
+      />
     </Dialog>
   );
 }
