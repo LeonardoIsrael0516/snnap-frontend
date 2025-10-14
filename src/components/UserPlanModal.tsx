@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Crown, Zap, Globe, Smartphone, Calendar, ShoppingCart, TrendingUp, Package, CreditCard } from "lucide-react";
-import ModernCheckout from "./ModernCheckout";
+import CaktoCheckoutModal from "./CaktoCheckoutModal";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
@@ -451,27 +451,31 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
       </DialogContent>
 
       {/* Modal de Checkout */}
-      {selectedPlan && (
-        <ModernCheckout
-          isOpen={checkoutOpen}
+      {selectedPlan && selectedPlan.caktoCheckoutUrl && (
+        <CaktoCheckoutModal
+          open={checkoutOpen}
           onClose={() => setCheckoutOpen(false)}
-          type="PLAN_SUBSCRIPTION"
-          referenceId={selectedPlan.id}
-          amount={selectedPlan.price}
-          title={`Assinatura ${selectedPlan.name}`}
-          description={selectedPlan.description || 'Plano premium'}
+          checkoutUrl={selectedPlan.caktoCheckoutUrl}
+          onSuccess={() => {
+            toast.success('Pagamento processado com sucesso!');
+            setCheckoutOpen(false);
+            // Recarregar dados do usuário
+            window.location.reload();
+          }}
         />
       )}
 
-      {selectedPackage && (
-        <ModernCheckout
-          isOpen={checkoutOpen}
+      {selectedPackage && selectedPackage.caktoCheckoutUrl && (
+        <CaktoCheckoutModal
+          open={checkoutOpen}
           onClose={() => setCheckoutOpen(false)}
-          type="CREDIT_PACKAGE"
-          referenceId={selectedPackage.id}
-          amount={selectedPackage.price}
-          title={selectedPackage.name}
-          description={selectedPackage.description || 'Pacote de créditos'}
+          checkoutUrl={selectedPackage.caktoCheckoutUrl}
+          onSuccess={() => {
+            toast.success('Pagamento processado com sucesso!');
+            setCheckoutOpen(false);
+            // Recarregar dados do usuário
+            window.location.reload();
+          }}
         />
       )}
     </Dialog>

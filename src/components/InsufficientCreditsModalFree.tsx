@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import CaktoCheckoutModal from "./CaktoCheckoutModal";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
@@ -39,6 +40,8 @@ interface Plan {
   pwaEnabled: boolean;
   isPopular: boolean;
   isActive: boolean;
+  caktoProductId: string | null;
+  caktoCheckoutUrl: string | null;
   features: string[];
 }
 
@@ -51,6 +54,8 @@ export default function InsufficientCreditsModalFree({
 }: InsufficientCreditsModalFreeProps) {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(false);
+  const [caktoModalOpen, setCaktoModalOpen] = useState(false);
+  const [selectedCheckoutUrl, setSelectedCheckoutUrl] = useState<string>('');
 
   // Carregar planos
   useEffect(() => {
@@ -73,10 +78,17 @@ export default function InsufficientCreditsModalFree({
   };
 
   const handlePlanSelect = (planId: string) => {
-    if (onPlanSelected) {
-      onPlanSelected(planId);
+    const plan = plans.find(p => p.id === planId);
+    if (plan?.caktoCheckoutUrl) {
+      setSelectedCheckoutUrl(plan.caktoCheckoutUrl);
+      setCaktoModalOpen(true);
+    } else {
+      // Fallback para o método antigo se não tiver URL da Cakto
+      if (onPlanSelected) {
+        onPlanSelected(planId);
+      }
+      onOpenChange(false);
     }
-    onOpenChange(false);
   };
 
   const getActionText = () => {
@@ -225,5 +237,18 @@ export default function InsufficientCreditsModalFree({
         </div>
       </DialogContent>
     </Dialog>
+
+    {/* Modal Cakto Checkout */}
+    <CaktoCheckoutModal
+      open={caktoModalOpen}
+      onClose={() => setCaktoModalOpen(false)}
+      checkoutUrl={selectedCheckoutUrl}
+      onSuccess={() => {
+        setCaktoModalOpen(false);
+        onOpenChange(false);
+        // Recarregar página para atualizar créditos/plano
+        window.location.reload();
+      }}
+    />
   );
 }

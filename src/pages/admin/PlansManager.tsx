@@ -33,6 +33,8 @@ interface Plan {
   pwaEnabled: boolean;
   isActive: boolean;
   stripePriceId: string | null;
+  caktoProductId: string | null;
+  caktoCheckoutUrl: string | null;
   features: string[];
   displayOrder: number;
   isPopular: boolean;
@@ -52,6 +54,8 @@ interface CreditPackage {
   currency: string;
   discount: number | null;
   stripePriceId: string | null;
+  caktoProductId: string | null;
+  caktoCheckoutUrl: string | null;
   isActive: boolean;
   displayOrder: number;
   createdAt: string;
@@ -80,6 +84,8 @@ export default function PlansManager() {
     pwaEnabled: false,
     isActive: true,
     stripePriceId: '',
+    caktoProductId: '',
+    caktoCheckoutUrl: '',
     features: '',
     displayOrder: '0',
     isPopular: false
@@ -93,6 +99,8 @@ export default function PlansManager() {
     currency: 'BRL',
     discount: '',
     stripePriceId: '',
+    caktoProductId: '',
+    caktoCheckoutUrl: '',
     isActive: true,
     displayOrder: '0'
   });
@@ -304,6 +312,8 @@ export default function PlansManager() {
       pwaEnabled: plan.pwaEnabled,
       isActive: plan.isActive,
       stripePriceId: plan.stripePriceId || '',
+      caktoProductId: plan.caktoProductId || '',
+      caktoCheckoutUrl: plan.caktoCheckoutUrl || '',
       features: Array.isArray(plan.features) ? plan.features.join(', ') : '',
       displayOrder: plan.displayOrder.toString(),
       isPopular: plan.isPopular
@@ -321,6 +331,8 @@ export default function PlansManager() {
       currency: pkg.currency,
       discount: pkg.discount ? pkg.discount.toString() : '',
       stripePriceId: pkg.stripePriceId || '',
+      caktoProductId: pkg.caktoProductId || '',
+      caktoCheckoutUrl: pkg.caktoCheckoutUrl || '',
       isActive: pkg.isActive,
       displayOrder: pkg.displayOrder.toString()
     });
@@ -338,6 +350,8 @@ export default function PlansManager() {
       pwaEnabled: false,
       isActive: true,
       stripePriceId: '',
+      caktoProductId: '',
+      caktoCheckoutUrl: '',
       features: '',
       displayOrder: '0',
       isPopular: false
@@ -354,6 +368,8 @@ export default function PlansManager() {
       currency: 'BRL',
       discount: '',
       stripePriceId: '',
+      caktoProductId: '',
+      caktoCheckoutUrl: '',
       isActive: true,
       displayOrder: '0'
     });
@@ -723,6 +739,27 @@ export default function PlansManager() {
               </div>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="caktoProductId">ID do Produto Cakto</Label>
+                <Input
+                  id="caktoProductId"
+                  value={planForm.caktoProductId}
+                  onChange={(e) => setPlanForm({ ...planForm, caktoProductId: e.target.value })}
+                  placeholder="ff3fdf61-e88f-43b5-982a-32d50f112414"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="caktoCheckoutUrl">URL do Checkout Cakto</Label>
+                <Input
+                  id="caktoCheckoutUrl"
+                  value={planForm.caktoCheckoutUrl}
+                  onChange={(e) => setPlanForm({ ...planForm, caktoCheckoutUrl: e.target.value })}
+                  placeholder="https://pay.cakto.com.br/EXAMPLE"
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="features">Features (separadas por vírgula)</Label>
               <Textarea
@@ -875,6 +912,27 @@ export default function PlansManager() {
                 onChange={(e) => setPackageForm({ ...packageForm, stripePriceId: e.target.value })}
                 placeholder="price_xxxxx (opcional)"
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="pkg-caktoProductId">ID do Produto Cakto</Label>
+                <Input
+                  id="pkg-caktoProductId"
+                  value={packageForm.caktoProductId}
+                  onChange={(e) => setPackageForm({ ...packageForm, caktoProductId: e.target.value })}
+                  placeholder="ff3fdf61-e88f-43b5-982a-32d50f112414"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="pkg-caktoCheckoutUrl">URL do Checkout Cakto</Label>
+                <Input
+                  id="pkg-caktoCheckoutUrl"
+                  value={packageForm.caktoCheckoutUrl}
+                  onChange={(e) => setPackageForm({ ...packageForm, caktoCheckoutUrl: e.target.value })}
+                  placeholder="https://pay.cakto.com.br/EXAMPLE"
+                />
+              </div>
             </div>
 
             <div className="flex items-center space-x-2">
