@@ -213,6 +213,9 @@ export async function generatePaymentToken(cardData: CardData): Promise<string> 
           .getPaymentToken()
           .then((response: any) => {
             clearTimeout(timeoutId);
+            console.log('🔍 [FRONTEND] Token gerado:', response.payment_token);
+            console.log('🔍 [FRONTEND] Tamanho do token:', response.payment_token?.length);
+            console.log('🔍 [FRONTEND] Formato do token:', /^[a-f0-9]+$/i.test(response.payment_token) ? 'HEX' : 'OUTRO');
             resolve(response.payment_token);
           })
           .catch((error: any) => {
