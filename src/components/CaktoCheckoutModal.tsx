@@ -94,10 +94,10 @@ export default function CaktoCheckoutModal({
     return null;
   }
 
-  // Mobile: Modal iframe em tela cheia
+  // Mobile: Modal iframe com espaçamentos e bordas arredondadas
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-none w-screen h-screen p-0 m-0 rounded-none border-0">
+      <DialogContent className="max-w-none w-[calc(100vw-16px)] h-[calc(100vh-32px)] p-0 m-4 rounded-t-3xl rounded-b-none border-0 shadow-2xl">
         {/* Botão de fechar - apenas no mobile */}
         <Button
           variant="ghost"
@@ -110,7 +110,7 @@ export default function CaktoCheckoutModal({
 
         {/* Loading */}
         {isLoading && (
-          <div className="flex items-center justify-center h-full bg-white">
+          <div className="flex items-center justify-center h-full bg-white rounded-t-3xl">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
               <p className="text-gray-600">Carregando checkout...</p>
@@ -120,7 +120,7 @@ export default function CaktoCheckoutModal({
 
         {/* Error */}
         {error && (
-          <div className="flex items-center justify-center h-full bg-white">
+          <div className="flex items-center justify-center h-full bg-white rounded-t-3xl">
             <div className="text-center p-4">
               <p className="text-red-600 mb-4">{error}</p>
               <Button onClick={handleOpenInNewTab} variant="outline">
@@ -130,10 +130,10 @@ export default function CaktoCheckoutModal({
           </div>
         )}
 
-        {/* Iframe - tela cheia no mobile */}
+        {/* Iframe - com bordas arredondadas no topo */}
         <iframe
           src={checkoutUrl}
-          className={`w-full h-full border-0 ${isLoading || error ? 'hidden' : 'block'}`}
+          className={`w-full h-full border-0 rounded-t-3xl ${isLoading || error ? 'hidden' : 'block'}`}
           onLoad={handleIframeLoad}
           onError={handleIframeError}
           title="Checkout Cakto"
