@@ -105,7 +105,7 @@ export default function CaktoCheckoutModal({
           onClick={onClose}
           className="absolute top-4 right-4 z-50 bg-white/90 hover:bg-white shadow-lg rounded-full p-2"
         >
-          <X className="w-5 h-5" />
+          <X className="w-5 h-5 text-black" />
         </Button>
 
         {/* Loading */}
@@ -137,8 +137,12 @@ export default function CaktoCheckoutModal({
           onLoad={handleIframeLoad}
           onError={handleIframeError}
           title="Checkout Cakto"
-          allow="payment"
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation"
+          allow="payment; camera; microphone; geolocation"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation allow-modals allow-downloads allow-pointer-lock"
+          style={{ 
+            pointerEvents: 'auto',
+            touchAction: 'manipulation'
+          }}
         />
       </DialogContent>
     </Dialog>
