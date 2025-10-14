@@ -97,7 +97,7 @@ export default function CaktoCheckoutModal({
   // Mobile: Modal iframe com espaçamentos e bordas arredondadas
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-none w-[calc(100vw-16px)] h-[calc(100vh-32px)] p-0 m-4 rounded-t-3xl rounded-b-none border-0 shadow-2xl">
+      <DialogContent className="max-w-none w-[calc(100vw-32px)] h-[calc(100vh-32px)] p-0 mx-auto my-4 rounded-t-3xl rounded-b-none border-0 shadow-2xl">
         {/* Botão de fechar - apenas no mobile */}
         <Button
           variant="ghost"
