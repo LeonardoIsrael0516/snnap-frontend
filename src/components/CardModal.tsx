@@ -210,57 +210,16 @@ export default function CardModal({
         ? `20${cardData.expiryYear}` 
         : cardData.expiryYear;
 
-      // Em produção, enviar dados do cartão para o backend gerar o token
-      // Em sandbox, gerar token localmente
-      const isProduction = import.meta.env.VITE_EFI_SANDBOX === 'false';
-      
-      let paymentToken;
-      
-      if (isProduction) {
-        console.log('🔍 [FRONTEND] Modo produção - enviando dados para backend gerar token');
-        // Enviar dados do cartão para o backend gerar o token
-        const tokenResponse = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/payments/generate-token`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-              cardData: {
-                brand: cardBrand,
-                number: cardData.number.replace(/\s/g, ''),
-                cvv: cardData.cvv,
-                expirationMonth: cardData.expiryMonth,
-                expirationYear: fullYear,
-                name: cardData.name,
-                cpf: cardData.cpf.replace(/\D/g, '')
-              }
-            })
-          }
-        );
-        
-        if (!tokenResponse.ok) {
-          throw new Error('Erro ao gerar token de pagamento');
-        }
-        
-        const tokenData = await tokenResponse.json();
-        paymentToken = tokenData.paymentToken;
-        console.log('✅ [FRONTEND] Token gerado pelo backend:', paymentToken);
-      } else {
-        console.log('🔍 [FRONTEND] Modo sandbox - gerando token localmente');
-        // Gerar token localmente em sandbox
-        paymentToken = await generatePaymentToken({
-          brand: cardBrand,
-          number: cardData.number.replace(/\s/g, ''),
-          cvv: cardData.cvv,
-          expirationMonth: cardData.expiryMonth,
-          expirationYear: fullYear,
-          name: cardData.name,
-          cpf: cardData.cpf.replace(/\D/g, '')
-        });
-      }
+      // Gerar token de pagamento
+      const paymentToken = await generatePaymentToken({
+        brand: cardBrand,
+        number: cardData.number.replace(/\s/g, ''),
+        cvv: cardData.cvv,
+        expirationMonth: cardData.expiryMonth,
+        expirationYear: fullYear,
+        name: cardData.name,
+        cpf: cardData.cpf.replace(/\D/g, '')
+      });
 
       // Obter email do usuário do localStorage
       const userData = localStorage.getItem('user');
