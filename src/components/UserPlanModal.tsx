@@ -332,7 +332,15 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
                     </div>
 
                     {/* Low Credits Warning - apenas para planos pagos */}
-                    {permissions.credits.available < 5 && permissions.plan?.name !== 'Free' && (
+                    {(() => {
+                      console.log('🔍 Debug Credits Warning (Modal):', {
+                        creditsAvailable: permissions.credits.available,
+                        planName: permissions.plan?.name,
+                        isFree: permissions.plan?.name === 'Free',
+                        shouldShow: permissions.credits.available < 5 && permissions.plan?.name !== 'Free'
+                      });
+                      return permissions.credits.available < 5 && permissions.plan?.name !== 'Free';
+                    })() && (
                       <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                         <p className="text-sm font-medium text-yellow-700 dark:text-yellow-400">
                           ⚠️ Créditos baixos!
