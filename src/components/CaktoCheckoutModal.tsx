@@ -37,14 +37,17 @@ export default function CaktoCheckoutModal({
       setIsLoading(true);
       setError(null);
       
+      // Verificar se é mobile no momento da abertura
+      const isCurrentlyMobile = window.innerWidth < 768;
+      
       // Se for desktop, abrir em nova aba automaticamente
-      if (!isMobile) {
+      if (!isCurrentlyMobile) {
         window.open(checkoutUrl, '_blank');
         onClose();
         return;
       }
     }
-  }, [open, isMobile, checkoutUrl, onClose]);
+  }, [open, checkoutUrl, onClose]);
 
   const handleIframeLoad = () => {
     setIsLoading(false);
@@ -97,7 +100,7 @@ export default function CaktoCheckoutModal({
   // Mobile: Modal iframe com espaçamentos e bordas arredondadas
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-none w-[calc(100vw-32px)] h-[calc(100vh-32px)] p-0 mx-auto my-4 rounded-t-3xl rounded-b-none border-0 shadow-2xl">
+      <DialogContent className="max-w-none w-[calc(100vw-32px)] h-[calc(100vh-80px)] p-0 mx-auto mt-16 mb-4 rounded-t-3xl rounded-b-none border-0 shadow-2xl">
         {/* Botão de fechar - apenas no mobile */}
         <Button
           variant="ghost"
