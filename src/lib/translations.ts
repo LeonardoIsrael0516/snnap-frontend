@@ -140,6 +140,7 @@ export const translations: Record<Language, Translations> = {
     },
     linkAI: {
       title: 'Snapy',
+      description: 'Crie páginas incríveis com IA',
       createNew: 'Criar nova página',
       editPage: 'Editar Página',
       viewPage: 'Ver Página',
@@ -233,6 +234,7 @@ export const translations: Record<Language, Translations> = {
     },
     linkAI: {
       title: 'Snapy',
+      description: 'Create amazing pages with AI',
       createNew: 'Create new page',
       editPage: 'Edit Page',
       viewPage: 'View Page',
@@ -326,6 +328,7 @@ export const translations: Record<Language, Translations> = {
     },
     linkAI: {
       title: 'Snapy',
+      description: 'Crea páginas increíbles con IA',
       createNew: 'Crear nueva página',
       editPage: 'Editar Página',
       viewPage: 'Ver Página',
