@@ -29,11 +29,18 @@ export default function Login() {
   const [referralCode, setReferralCode] = useState("");
 
   useEffect(() => {
-    // Capturar código de indicação da URL
+    // Capturar parâmetros da URL
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get('ref');
+    const mode = urlParams.get('mode');
+    
     if (refCode) {
       setReferralCode(refCode);
+    }
+    
+    // Se mode=register, ativar modo de cadastro
+    if (mode === 'register') {
+      setIsRegister(true);
     }
 
     // Definir callback global para o Google
