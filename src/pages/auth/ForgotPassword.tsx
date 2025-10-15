@@ -67,6 +67,46 @@ export default function ForgotPassword() {
     }
   };
 
+  const verifyResetCode = async () => {
+    if (!resetCode || !email) {
+      toast.error('Digite o código e confirme seu email');
+      return;
+    }
+
+    if (resetCode.length !== 6) {
+      toast.error('O código deve ter 6 dígitos');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/verify-reset-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          token: resetCode,
+          email: email
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.valid) {
+        setUser(data.user);
+        setStep('reset');
+        toast.success('Código válido! Agora você pode redefinir sua senha.');
+      } else {
+        toast.error(data.error || 'Código inválido ou expirado');
+      }
+    } catch (error) {
+      toast.error('Erro ao verificar código');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const sendResetEmail = async () => {
     if (!email) {
       toast.error('Digite seu email');
@@ -125,7 +165,8 @@ export default function ForgotPassword() {
         },
         body: JSON.stringify({ 
           token: tokenFromUrl || resetCode,
-          password 
+          password,
+          email: email // Sempre enviar o email para códigos de 6 dígitos
         })
       });
 
@@ -205,7 +246,7 @@ export default function ForgotPassword() {
               </>
             ) : (
               <>
-                {!tokenFromUrl && (
+                {!tokenFromUrl && !user && (
                   <div>
                     <Label htmlFor="resetCode" className="text-slate-200">Código de Verificação</Label>
                     <Input
@@ -220,6 +261,22 @@ export default function ForgotPassword() {
                     />
                     <p className="text-sm text-slate-400 mt-1">
                       Digite o código de 6 dígitos recebido por email
+                    </p>
+                    <Button 
+                      onClick={verifyResetCode} 
+                      disabled={isLoading || resetCode.length !== 6}
+                      className="w-full mt-3 gradient-instagram text-white hover:opacity-90 transition-opacity h-10 text-sm font-semibold"
+                    >
+                      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      Verificar Código
+                    </Button>
+                  </div>
+                )}
+
+                {user && (
+                  <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-3 mb-4">
+                    <p className="text-green-200 text-sm">
+                      ✅ Código verificado para: {user.email}
                     </p>
                   </div>
                 )}
