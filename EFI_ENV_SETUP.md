@@ -40,3 +40,4 @@ npm run dev
 ## Nota Importante
 O código `9892f8deff68bec71e66bd65c2661f5a` que estava sendo usado como fallback não é válido para sandbox da Efí. Você precisa usar o código real da sua conta.
 
+

@@ -167,9 +167,7 @@ export default function AdminUsers() {
       }
 
       const data = await response.json();
-      console.log('📋 Dados dos planos recebidos:', data);
       const plansArray = data.plans || [];
-      console.log('📊 Planos filtrados (sem Free):', plansArray.filter(plan => plan.name !== 'Free'));
       setPlans(plansArray);
     } catch (error) {
       console.error('Error fetching plans:', error);
@@ -406,7 +404,7 @@ export default function AdminUsers() {
             Voltar
           </Button>
           <div>
-            <h1 className="text-4xl font-bold gradient-instagram-text">Gerenciar Usuários</h1>
+            <h1 className="text-4xl font-bold gradient-instagram-text">Usuários</h1>
             <p className="text-muted-foreground">
               Visualize e gerencie todos os usuários do sistema
             </p>
@@ -436,7 +434,7 @@ export default function AdminUsers() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Administradores</CardTitle>
+              <CardTitle className="text-sm font-medium">Usuários</CardTitle>
               <Shield className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -525,7 +523,7 @@ export default function AdminUsers() {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
                     <Badge variant={user.role === 'ADMIN' ? 'default' : 'secondary'}>
-                      {user.role === 'ADMIN' ? 'Admin' : 'Usuário'}
+                      Usuário
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -568,7 +566,7 @@ export default function AdminUsers() {
                         )}
                       >
                         <Edit className="h-4 w-4 mr-1" />
-                        {user.role === 'ADMIN' ? 'Remover Admin' : 'Tornar Admin'}
+                        Alterar Usuário
                       </Button>
                       <Button
                         variant="destructive"
@@ -678,7 +676,7 @@ export default function AdminUsers() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="USER">Usuário</SelectItem>
-                  <SelectItem value="ADMIN">Administrador</SelectItem>
+                  <SelectItem value="ADMIN">Usuário</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -766,7 +764,7 @@ export default function AdminUsers() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="USER">Usuário</SelectItem>
-                  <SelectItem value="ADMIN">Administrador</SelectItem>
+                  <SelectItem value="ADMIN">Usuário</SelectItem>
                 </SelectContent>
               </Select>
             </div>

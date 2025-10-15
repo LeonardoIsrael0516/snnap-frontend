@@ -142,13 +142,12 @@ export default function Admin() {
         </p>
       </div>
 
-      {/* Admin Navigation */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Link to="/admin/users">
           <Card className="hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-blue-500">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
               <div className="space-y-1">
-                <CardTitle className="text-lg">Gerenciar Usuários</CardTitle>
+                <CardTitle className="text-lg">Usuários</CardTitle>
                 <CardDescription>
                   Visualizar, editar e gerenciar contas de usuários
                 </CardDescription>

@@ -101,7 +101,6 @@ export interface Translations {
   // User Menu
   userMenu: {
     settings: string;
-    adminPanel: string;
     plansAndPayments: string;
     logout: string;
   };
@@ -197,7 +196,6 @@ export const translations: Record<Language, Translations> = {
     },
     userMenu: {
       settings: 'Configurações',
-      adminPanel: 'Painel Admin',
       plansAndPayments: 'Planos e Pagamentos',
       logout: 'Sair',
     },
@@ -291,7 +289,6 @@ export const translations: Record<Language, Translations> = {
     },
     userMenu: {
       settings: 'Settings',
-      adminPanel: 'Admin Panel',
       plansAndPayments: 'Plans & Payments',
       logout: 'Logout',
     },
@@ -385,7 +382,6 @@ export const translations: Record<Language, Translations> = {
     },
     userMenu: {
       settings: 'Configuración',
-      adminPanel: 'Panel Admin',
       plansAndPayments: 'Planes y Pagos',
       logout: 'Cerrar Sesión',
     },

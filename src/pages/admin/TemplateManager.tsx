@@ -171,7 +171,6 @@ export default function TemplateManager() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('✅ Templates carregados:', data);
         setTemplates(data);
       } else {
         console.error('❌ Erro ao carregar templates:', response.status);
@@ -212,7 +211,6 @@ export default function TemplateManager() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('✅ Páginas AI carregadas:', data);
         setAiPages(data);
       } else {
         console.error('❌ Erro ao carregar páginas:', response.status);

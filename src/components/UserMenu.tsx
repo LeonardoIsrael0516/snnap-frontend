@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   Settings,
-  ShieldCheck,
   CreditCard,
   ChevronDown,
   LogOut,
@@ -154,14 +153,6 @@ export function UserMenu() {
               {t.userMenu.settings}
             </Link>
           </DropdownMenuItem>
-          {user?.role === 'ADMIN' && (
-            <DropdownMenuItem asChild>
-              <Link to="/admin" className="cursor-pointer">
-                <ShieldCheck className="w-4 h-4 mr-2" />
-                {t.userMenu.adminPanel}
-              </Link>
-            </DropdownMenuItem>
-          )}
           <DropdownMenuItem 
             onClick={() => {
               setUserPlanModalOpen(true);

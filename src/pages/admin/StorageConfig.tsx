@@ -87,7 +87,6 @@ export default function StorageConfig() {
       const url = editingId ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/storage/config/${editingId}` : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/storage/config`;
       const method = editingId ? 'PUT' : 'POST';
 
-      console.log('🔧 Salvando configuração:', { url, method, formData });
 
       const token = localStorage.getItem('token');
       const response = await fetch(url, {
@@ -99,11 +98,7 @@ export default function StorageConfig() {
         body: JSON.stringify(formData),
       });
 
-      console.log('🔧 Response status:', response.status);
-      console.log('🔧 Response headers:', response.headers);
-
       const data = await response.json();
-      console.log('🔧 Response data:', data);
 
       if (data.success) {
         toast.success(data.message);

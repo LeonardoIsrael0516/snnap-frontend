@@ -87,9 +87,6 @@ export default function InsufficientCreditsModal({
 
       if (response.ok) {
         const data = await response.json();
-        console.log('📊 Dados do usuário carregados:', data);
-        console.log('📊 Nome do plano:', data.plan?.name);
-        console.log('📊 É plano Free?', data.plan?.name === 'Free' || !data.plan);
         
         setUserPlan({
           name: data.plan?.name || 'Free',

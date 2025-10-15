@@ -76,7 +76,6 @@ export default function LinkAI() {
       if (insufficientCreditsData) {
         try {
           const data = JSON.parse(insufficientCreditsData);
-          console.log('💰 Dados de créditos insuficientes encontrados no localStorage:', data);
           
           // Verificar se os dados são recentes (últimos 5 segundos)
           if (Date.now() - data.timestamp < 5000) {

@@ -1,4 +1,4 @@
-// Admin Module - Exportações centralizadas
+// Exportações centralizadas
 export { default as Admin } from './Admin';
 export { default as AdminUsers } from './AdminUsers';
 export { default as StorageConfig } from './StorageConfig';

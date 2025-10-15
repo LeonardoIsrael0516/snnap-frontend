@@ -78,21 +78,10 @@ export default function Dashboard() {
         <div>
           <h1 className="text-2xl md:text-4xl font-bold mb-2 gradient-instagram-text">Dashboard</h1>
           <p className="text-sm md:text-base text-muted-foreground">
-            Bem-vindo, {user.name}! 
-            {user.role === 'ADMIN' && <span className="ml-2 text-blue-600 font-semibold">(Administrador)</span>}
+            Bem-vindo, {user.name}!
           </p>
         </div>
         
-        {user.role === 'ADMIN' && (
-          <Button 
-            variant="outline" 
-            onClick={() => handleNavigate('/admin')}
-            className="flex items-center gap-2 w-full md:w-auto"
-          >
-            <Settings className="w-4 h-4" />
-            Admin
-          </Button>
-        )}
       </div>
 
       {/* Stats Cards */}
