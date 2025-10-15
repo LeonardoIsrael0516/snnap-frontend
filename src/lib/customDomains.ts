@@ -224,6 +224,6 @@ export function getPageUrl(slug: string, domain?: CustomDomain | null): string {
   }
   
   // Usa o domínio padrão do microserviço link-ai
-  const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'https://snnap-link-ai.onrender.com';
+  const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'http://localhost:3002';
   return `${LINK_AI_URL}/${slug}`;
 }

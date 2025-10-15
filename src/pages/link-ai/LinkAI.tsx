@@ -451,7 +451,7 @@ export default function LinkAI() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-24 md:pb-6">
             {links.map(link => {
               // Sempre usar URL completa do microserviço link-ai para preview
-              const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'https://snnap-link-ai.onrender.com';
+              const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'http://localhost:3002';
               const previewUrl = `${LINK_AI_URL}/${link.slug}`;
               
               return <Card key={link.id} className="group hover:border-primary/50 transition-smooth overflow-hidden">
@@ -508,7 +508,7 @@ export default function LinkAI() {
                     
                     <Button variant="outline" size="sm" onClick={() => {
                       // Sempre usar URL completa do microserviço link-ai
-                      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'https://snnap-link-ai.onrender.com';
+                      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'http://localhost:3002';
                       window.open(`${LINK_AI_URL}/${link.slug}`, '_blank');
                     }} className="hover-gradient flex-shrink-0">
                       <Eye className="w-3 h-3 mr-1" />

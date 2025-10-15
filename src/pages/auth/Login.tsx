@@ -270,7 +270,7 @@ export default function Login() {
       const expiresAt = Date.now() + (userData.expiresIn * 1000);
       localStorage.setItem('tokenExpiresAt', expiresAt.toString());
       
-      toast.success("Conta criada com sucesso! Você foi logado automaticamente.");
+      toast.success("Conta criada com sucesso!");
       
       // Redirect baseado no role
       if (userData.user?.role === 'ADMIN') {

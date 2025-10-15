@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
           
           if (aiPage) {
             // AI page encontrada - redirecionar para o microserviço link-ai
-            const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'https://snnap-link-ai.onrender.com';
+            const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL?.replace('/api', '') || 'http://localhost:3002';
             window.location.href = `${LINK_AI_URL}/${slug}`;
             return;
           }
