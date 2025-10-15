@@ -198,7 +198,7 @@ export default function ForgotPassword() {
           <img 
             src="/snap-sidebar.png" 
             alt="Snnap Logo" 
-            className="mx-auto h-16 w-auto mb-6"
+            className="mx-auto h-10 w-auto mb-6"
           />
         </div>
 
