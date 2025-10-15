@@ -40,7 +40,8 @@ export default defineConfig(({ mode }) => {
       compress: {
         drop_console: true, // remove TODOS os console.*
         drop_debugger: true // remove debugger
-      }
+      },
+      mangle: true // ofusca nomes de variáveis e funções
     } : undefined,
     rollupOptions: {
       output: {
