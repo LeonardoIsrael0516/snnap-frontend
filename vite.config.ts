@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import removeConsole from "vite-plugin-remove-console";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -25,7 +26,15 @@ export default defineConfig(({ mode }) => {
       },
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    // Remover console.log automaticamente no build de produção
+    mode === 'production' && removeConsole({
+      includes: ['console.log', 'console.info', 'console.debug', 'console.warn'],
+      // Manter apenas console.error para debugging crítico de produção
+      external: ['console']
+    })
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
