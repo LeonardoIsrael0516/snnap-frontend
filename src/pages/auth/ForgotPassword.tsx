@@ -193,6 +193,15 @@ export default function ForgotPassword() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {/* Logo */}
+        <div className="text-center">
+          <img 
+            src="/snap-sidebar.png" 
+            alt="Snnap Logo" 
+            className="mx-auto h-16 w-auto mb-6"
+          />
+        </div>
+
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-white">
             {step === 'email' ? 'Esqueceu sua senha?' : 'Redefinir Senha'}
