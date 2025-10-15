@@ -151,13 +151,13 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-3xl font-extrabold text-white">
             {step === 'email' ? 'Esqueceu sua senha?' : 'Redefinir Senha'}
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-slate-300">
             {step === 'email' 
               ? 'Digite seu email para receber instruções de redefinição'
               : 'Digite o código recebido por email e sua nova senha'
@@ -165,13 +165,13 @@ export default function ForgotPassword() {
           </p>
         </div>
 
-        <Card>
+        <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-white">
               {step === 'email' ? <Mail className="h-5 w-5" /> : <Key className="h-5 w-5" />}
               {step === 'email' ? 'Enviar Código' : 'Nova Senha'}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-slate-300">
               {step === 'email' 
                 ? 'Enviaremos um código de 6 dígitos para seu email'
                 : 'Use o código recebido por email para redefinir sua senha'
@@ -182,7 +182,7 @@ export default function ForgotPassword() {
             {step === 'email' ? (
               <>
                 <div>
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email" className="text-slate-200">Email</Label>
                   <Input
                     id="email"
                     type="email"
@@ -190,13 +190,14 @@ export default function ForgotPassword() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isLoading}
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
                   />
                 </div>
 
                 <Button 
                   onClick={sendResetEmail} 
                   disabled={isLoading}
-                  className="w-full"
+                  className="w-full gradient-instagram text-white hover:opacity-90 transition-opacity h-11 text-base font-semibold"
                 >
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Enviar Código de Recuperação
@@ -206,7 +207,7 @@ export default function ForgotPassword() {
               <>
                 {!tokenFromUrl && (
                   <div>
-                    <Label htmlFor="resetCode">Código de Verificação</Label>
+                    <Label htmlFor="resetCode" className="text-slate-200">Código de Verificação</Label>
                     <Input
                       id="resetCode"
                       type="text"
@@ -215,15 +216,16 @@ export default function ForgotPassword() {
                       onChange={(e) => setResetCode(e.target.value)}
                       disabled={isLoading}
                       maxLength={6}
+                      className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
                     />
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-slate-400 mt-1">
                       Digite o código de 6 dígitos recebido por email
                     </p>
                   </div>
                 )}
 
                 <div>
-                  <Label htmlFor="password">Nova Senha</Label>
+                  <Label htmlFor="password" className="text-slate-200">Nova Senha</Label>
                   <Input
                     id="password"
                     type="password"
@@ -231,11 +233,12 @@ export default function ForgotPassword() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isLoading}
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="confirmPassword">Confirmar Nova Senha</Label>
+                  <Label htmlFor="confirmPassword" className="text-slate-200">Confirmar Nova Senha</Label>
                   <Input
                     id="confirmPassword"
                     type="password"
@@ -243,13 +246,14 @@ export default function ForgotPassword() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     disabled={isLoading}
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
                   />
                 </div>
 
                 <Button 
                   onClick={resetPassword} 
                   disabled={isLoading}
-                  className="w-full"
+                  className="w-full gradient-instagram text-white hover:opacity-90 transition-opacity h-11 text-base font-semibold"
                 >
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Redefinir Senha
@@ -261,7 +265,7 @@ export default function ForgotPassword() {
               <Button 
                 variant="ghost" 
                 onClick={goBackToLogin}
-                className="text-sm"
+                className="text-sm text-slate-300 hover:text-white hover:bg-slate-700/50"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Voltar ao Login
@@ -271,9 +275,9 @@ export default function ForgotPassword() {
         </Card>
 
         {step === 'reset' && (
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-blue-900/20 border-blue-500/30 backdrop-blur-sm">
             <CardContent className="pt-6">
-              <div className="text-sm text-blue-800">
+              <div className="text-sm text-blue-200">
                 <p className="font-medium mb-2">📧 Instruções:</p>
                 <ul className="space-y-1 text-sm">
                   <li>• Verifique sua caixa de entrada e spam</li>
