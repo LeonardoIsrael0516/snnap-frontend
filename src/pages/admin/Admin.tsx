@@ -227,6 +227,20 @@ export default function Admin() {
           </Card>
         </Link>
 
+        <Link to="/admin/email-config">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-indigo-500">
+            <CardHeader className="flex flex-row items-center space-y-0 pb-2">
+              <div className="space-y-1">
+                <CardTitle className="text-lg">Configurações de Email</CardTitle>
+                <CardDescription>
+                  Configurar SendGrid para emails de redefinição de senha
+                </CardDescription>
+              </div>
+              <MessageSquare className="h-8 w-8 text-indigo-500 ml-auto" />
+            </CardHeader>
+          </Card>
+        </Link>
+
         <Card className="border-l-4 border-l-green-500">
           <CardHeader className="flex flex-row items-center space-y-0 pb-2">
             <div className="space-y-1">

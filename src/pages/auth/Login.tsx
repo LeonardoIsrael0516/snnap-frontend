@@ -557,6 +557,19 @@ export default function Login() {
               </button>
             </>
           )}
+
+          {!isRegister && (
+            <div className="mt-4 text-center">
+              <button
+                type="button"
+                onClick={() => window.location.href = '/forgot-password'}
+                className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
+                disabled={isLoading}
+              >
+                Esqueceu sua senha?
+              </button>
+            </div>
+          )}
           
           <div className="mt-6 pt-6 border-t border-slate-800">
             <p className="text-center text-sm text-slate-400">

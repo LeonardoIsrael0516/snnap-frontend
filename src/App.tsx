@@ -15,10 +15,12 @@ import NotFound from "./pages/NotFound";
 
 // Módulos organizados
 import { Login } from "./pages/auth";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 import { LinkAI, LinkAICreate } from "./pages/link-ai";
 import { Biolinks, BiolinkEditor } from "./pages/biolink";
 import { ViewPage } from "./pages/public";
 import { Admin, AdminUsers, StorageConfig, PlansManager, UserPlansManager } from "./pages/admin";
+import EmailConfig from "./pages/admin/EmailConfig";
 import TemplateManager from "./pages/admin/TemplateManager";
 import CustomDomains from "./pages/CustomDomains";
 import { PageAnalytics } from "./pages/analytics";
@@ -49,6 +51,7 @@ const App = () => {
             </PublicRoute>
           } />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           
           {/* Protected routes with layout */}
           <Route path="/link-ai" element={
@@ -123,6 +126,11 @@ const App = () => {
               <Route path="/admin/user-plans" element={
                 <ProtectedRoute adminOnly>
                   <Layout><UserPlansManager /></Layout>
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/email-config" element={
+                <ProtectedRoute adminOnly>
+                  <Layout><EmailConfig /></Layout>
                 </ProtectedRoute>
               } />
           
