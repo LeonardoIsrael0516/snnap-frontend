@@ -128,8 +128,7 @@ export default function ForgotPassword() {
       if (response.ok) {
         toast.success(data.message);
         setStep('reset');
-        // Simular dados do usuário (não revelados por segurança)
-        setUser({ id: '', email, name: '' });
+        // NÃO definir usuário aqui - só após verificar o código
       } else {
         toast.error(data.error || 'Erro ao enviar email');
       }
@@ -274,47 +273,49 @@ export default function ForgotPassword() {
                 )}
 
                 {user && (
-                  <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-3 mb-4">
-                    <p className="text-green-200 text-sm">
-                      ✅ Código verificado para: {user.email}
-                    </p>
-                  </div>
+                  <>
+                    <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-3 mb-4">
+                      <p className="text-green-200 text-sm">
+                        ✅ Código verificado para: {user.email}
+                      </p>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="password" className="text-slate-200">Nova Senha</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="Mínimo 6 caracteres"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled={isLoading}
+                        className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="confirmPassword" className="text-slate-200">Confirmar Nova Senha</Label>
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="Digite a senha novamente"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        disabled={isLoading}
+                        className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
+                      />
+                    </div>
+
+                    <Button 
+                      onClick={resetPassword} 
+                      disabled={isLoading}
+                      className="w-full gradient-instagram text-white hover:opacity-90 transition-opacity h-11 text-base font-semibold"
+                    >
+                      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      Redefinir Senha
+                    </Button>
+                  </>
                 )}
-
-                <div>
-                  <Label htmlFor="password" className="text-slate-200">Nova Senha</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Mínimo 6 caracteres"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={isLoading}
-                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="confirmPassword" className="text-slate-200">Confirmar Nova Senha</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Digite a senha novamente"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    disabled={isLoading}
-                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
-                  />
-                </div>
-
-                <Button 
-                  onClick={resetPassword} 
-                  disabled={isLoading}
-                  className="w-full gradient-instagram text-white hover:opacity-90 transition-opacity h-11 text-base font-semibold"
-                >
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Redefinir Senha
-                </Button>
               </>
             )}
 
