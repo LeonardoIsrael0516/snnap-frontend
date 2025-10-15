@@ -88,8 +88,10 @@ export default function InsufficientCreditsModalPaid({
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/plans`);
       if (response.ok) {
         const data = await response.json();
+        // A API retorna { plans: [...] }, então precisamos acessar data.plans
+        const plansData = data.plans || data;
         // Filtrar apenas planos ativos e excluir o plano Free
-        setPlans(data.filter((plan: Plan) => plan.isActive && plan.name !== 'Free'));
+        setPlans(plansData.filter((plan: Plan) => plan.isActive && plan.name !== 'Free'));
       }
     } catch (error) {
       console.error('Erro ao carregar planos:', error);
@@ -101,7 +103,9 @@ export default function InsufficientCreditsModalPaid({
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/credit-packages`);
       if (response.ok) {
         const data = await response.json();
-        setCreditPackages(data.filter((pkg: CreditPackage) => pkg.isActive));
+        // A API pode retornar { packages: [...] } ou array direto
+        const packagesData = data.packages || data;
+        setCreditPackages(packagesData.filter((pkg: CreditPackage) => pkg.isActive));
       }
     } catch (error) {
       console.error('Erro ao carregar pacotes de créditos:', error);

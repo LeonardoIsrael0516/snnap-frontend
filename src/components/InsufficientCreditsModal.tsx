@@ -76,6 +76,11 @@ export default function InsufficientCreditsModal({
     }
   }, [open]);
 
+  // Debug: log dos planos quando mudarem
+  useEffect(() => {
+    console.log('🔍 Planos atualizados:', plans);
+  }, [plans]);
+
   const loadUserData = async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/permissions`, {
@@ -100,14 +105,36 @@ export default function InsufficientCreditsModal({
 
   const loadPlans = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/plans`);
+      console.log('🔍 Carregando planos...');
+      console.log('🔍 VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
+      const url = `${import.meta.env.VITE_API_BASE_URL}/plans`;
+      console.log('🔍 URL completa:', url);
+      const response = await fetch(url);
+      console.log('🔍 Response status:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('🔍 Dados recebidos:', data);
+        
+        // A API retorna { plans: [...] }, então precisamos acessar data.plans
+        const plansData = data.plans || data;
+        console.log('🔍 Planos extraídos:', plansData);
+        
         // Filtrar apenas planos ativos e excluir o plano Free
-        setPlans(data.filter((plan: Plan) => plan.isActive && plan.name !== 'Free'));
+        const filteredPlans = plansData.filter((plan: Plan) => {
+          const isActive = plan.isActive;
+          const isNotFree = plan.name !== 'Free';
+          console.log(`🔍 Plano ${plan.name}: isActive=${isActive}, isNotFree=${isNotFree}, resultado=${isActive && isNotFree}`);
+          return isActive && isNotFree;
+        });
+        console.log('🔍 Planos filtrados:', filteredPlans);
+        
+        setPlans(filteredPlans);
+      } else {
+        console.error('❌ Erro na resposta:', response.status, response.statusText);
       }
     } catch (error) {
-      console.error('Erro ao carregar planos:', error);
+      console.error('❌ Erro ao carregar planos:', error);
     }
   };
 
@@ -116,7 +143,9 @@ export default function InsufficientCreditsModal({
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/credit-packages`);
       if (response.ok) {
         const data = await response.json();
-        setCreditPackages(data.filter((pkg: CreditPackage) => pkg.isActive));
+        // A API pode retornar { packages: [...] } ou array direto
+        const packagesData = data.packages || data;
+        setCreditPackages(packagesData.filter((pkg: CreditPackage) => pkg.isActive));
       }
     } catch (error) {
       console.error('Erro ao carregar pacotes de créditos:', error);
@@ -227,7 +256,12 @@ export default function InsufficientCreditsModal({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {plans.map((plan) => (
+                {plans.length === 0 ? (
+                  <div className="col-span-full text-center py-8">
+                    <p className="text-muted-foreground">Nenhum plano disponível no momento.</p>
+                  </div>
+                ) : (
+                  plans.map((plan) => (
                   <Card 
                     key={plan.id} 
                     className={`relative cursor-pointer transition-all hover:shadow-lg ${
@@ -303,7 +337,8 @@ export default function InsufficientCreditsModal({
                       </Button>
                     </CardContent>
                   </Card>
-                ))}
+                  ))
+                )}
               </div>
             </TabsContent>
 

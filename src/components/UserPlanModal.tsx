@@ -402,7 +402,7 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
                             ? 'Domínios ilimitados'
                             : plan.customDomainsLimit === 0
                             ? 'Sem domínios personalizados'
-                            : `${plan.customDomainsLimit} domínio(s)`}
+                            : `${plan.customDomainsLimit} Domínios personalizados`}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
