@@ -499,8 +499,7 @@ export default function Admin() {
           <CardContent>
             <p className="text-sm text-muted-foreground">
               Quando todas as 3 IAs estiverem configuradas, o sistema poderá usar as três em conjunto 
-              para criar páginas ainda mais incríveis, similar ao Lovable. Cada IA contribuirá com suas 
-              especialidades para entregar o melhor resultado.
+              para criar páginas ainda mais incríveis.
             </p>
           </CardContent>
         </Card>

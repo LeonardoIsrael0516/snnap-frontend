@@ -99,7 +99,7 @@ export default function SuggestionsAdmin() {
       if (statusFilter && statusFilter !== 'all') params.append('status', statusFilter);
       if (categoryFilter && categoryFilter !== 'all') params.append('category', categoryFilter);
       
-      const response = await fetch(`/api/suggestions?${params.toString()}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/suggestions?${params.toString()}`, {
         headers: getAuthHeaders(),
       });
 
@@ -140,7 +140,7 @@ export default function SuggestionsAdmin() {
 
     setIsUpdating(true);
     try {
-      const response = await fetch(`/api/suggestions/${selectedSuggestion.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/suggestions/${selectedSuggestion.id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify(editForm),
@@ -172,7 +172,7 @@ export default function SuggestionsAdmin() {
     if (!confirm('Tem certeza que deseja deletar esta sugestão?')) return;
 
     try {
-      const response = await fetch(`/api/suggestions/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/suggestions/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders(),
       });

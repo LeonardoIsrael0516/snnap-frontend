@@ -62,11 +62,20 @@ export default function Sugestoes() {
       return;
     }
 
+    if (form.description.trim().length < 10) {
+      toast({
+        title: 'Erro',
+        description: 'A descrição deve ter pelo menos 10 caracteres.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       console.log('📤 Enviando dados:', form);
-      const response = await fetch('/api/suggestions', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/suggestions`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify(form),
@@ -89,7 +98,14 @@ export default function Sugestoes() {
         });
       } else {
         console.error('❌ Erro na API:', data);
-        throw new Error(data.error || data.details || 'Erro ao enviar sugestão');
+        
+        // Se há detalhes de validação, mostrar o primeiro erro
+        if (data.details && Array.isArray(data.details) && data.details.length > 0) {
+          const firstError = data.details[0];
+          throw new Error(firstError.message || data.error || 'Erro ao enviar sugestão');
+        }
+        
+        throw new Error(data.error || data.message || 'Erro ao enviar sugestão');
       }
     } catch (error) {
       console.error('Erro ao enviar sugestão:', error);
@@ -216,9 +232,10 @@ export default function Sugestoes() {
                 rows={6}
                 maxLength={2000}
                 required
+                className={form.description.length > 0 && form.description.length < 10 ? 'border-red-500' : ''}
               />
-              <p className="text-sm text-muted-foreground">
-                {form.description.length}/2000 caracteres
+              <p className={`text-sm ${form.description.length > 0 && form.description.length < 10 ? 'text-red-500' : 'text-muted-foreground'}`}>
+                {form.description.length}/2000 caracteres {form.description.length > 0 && form.description.length < 10 && '(mínimo 10 caracteres)'}
               </p>
             </div>
 
