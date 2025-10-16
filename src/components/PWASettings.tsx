@@ -11,7 +11,7 @@ import { PWAOnboarding } from '@/components/PWAOnboarding';
 import { toast } from 'sonner';
 import { Smartphone, Palette, Upload, Settings, HelpCircle, Crown } from 'lucide-react';
 import { authenticatedFetch } from '@/lib/authService';
-import InsufficientCreditsModal from './InsufficientCreditsModal';
+import PWAUpgradeModal from './PWAUpgradeModal';
 
 interface PWASettingsProps {
   page: {
@@ -38,7 +38,7 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
   const [showInstallPrompt, setShowInstallPrompt] = useState(page.pwaShowInstallPrompt !== false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [userPermissions, setUserPermissions] = useState<{pwaEnabled: boolean} | null>(null);
-  const [showInsufficientCreditsModal, setShowInsufficientCreditsModal] = useState(false);
+  const [showPWAUpgradeModal, setShowPWAUpgradeModal] = useState(false);
   const [pwaConfig, setPwaConfig] = useState({
     name: page.pwaName || page.title,
     shortName: page.pwaShortName || page.title.slice(0, 12),
@@ -99,8 +99,8 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
     
     // Se está tentando ativar o PWA, verificar permissões
     if (enabled && userPermissions && !userPermissions.pwaEnabled) {
-      console.log('🚫 PWA: Usuário não tem permissão para PWA, abrindo modal de créditos');
-      setShowInsufficientCreditsModal(true);
+      console.log('🚫 PWA: Usuário não tem permissão para PWA, abrindo modal de upgrade');
+      setShowPWAUpgradeModal(true);
       return;
     }
     
@@ -492,19 +492,13 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
       )}
       </Card>
 
-      {/* Modal de Créditos Insuficientes para PWA */}
-      <InsufficientCreditsModal
-        open={showInsufficientCreditsModal}
-        onOpenChange={setShowInsufficientCreditsModal}
-        requiredCredits={0}
-        action="criação"
+      {/* Modal de Upgrade de PWA */}
+      <PWAUpgradeModal
+        open={showPWAUpgradeModal}
+        onOpenChange={setShowPWAUpgradeModal}
         onPlanSelected={(planId) => {
           console.log('Plano selecionado para PWA:', planId);
-          setShowInsufficientCreditsModal(false);
-        }}
-        onCreditsPurchased={(packageId) => {
-          console.log('Pacote de créditos comprado para PWA:', packageId);
-          setShowInsufficientCreditsModal(false);
+          setShowPWAUpgradeModal(false);
         }}
       />
     </>
