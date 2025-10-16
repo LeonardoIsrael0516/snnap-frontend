@@ -1,4 +1,4 @@
-import { Copy, CheckCircle, RefreshCw, ExternalLink } from "lucide-react";
+import { Copy, CheckCircle, RefreshCw, ExternalLink, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

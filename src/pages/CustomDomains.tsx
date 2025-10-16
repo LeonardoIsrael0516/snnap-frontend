@@ -205,11 +205,6 @@ export default function CustomDomains() {
                     <h3 className="text-lg md:text-xl font-semibold break-all">{domain.domain}</h3>
                     {getStatusBadge(domain.status)}
                     {getTypeBadge(domain.type)}
-                    {domain.isApex && (
-                      <Badge variant="outline" className="text-xs">
-                        Domínio Raiz
-                      </Badge>
-                    )}
                   </div>
 
                   <div className="space-y-2 mt-4">
@@ -217,12 +212,12 @@ export default function CustomDomains() {
                       <span className="text-muted-foreground flex-shrink-0">CNAME Target:</span>
                       <div className="flex items-center gap-2 flex-1 overflow-hidden">
                         <code className="px-2 py-1 bg-muted rounded text-xs font-mono break-all flex-1">
-                          {domain.cnameTarget}
+                          d05a2h02r6.snnap.link
                         </code>
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => copyToClipboard(domain.cnameTarget)}
+                          onClick={() => copyToClipboard("d05a2h02r6.snnap.link")}
                           className="flex-shrink-0"
                         >
                           <Copy className="w-3 h-3" />
@@ -230,24 +225,6 @@ export default function CustomDomains() {
                       </div>
                     </div>
 
-                    {domain.isApex && domain.serverIp && (
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
-                        <span className="text-muted-foreground flex-shrink-0">IP Alternativo:</span>
-                        <div className="flex items-center gap-2 flex-1 overflow-hidden">
-                          <code className="px-2 py-1 bg-muted rounded text-xs font-mono break-all flex-1">
-                            {domain.serverIp}
-                          </code>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(domain.serverIp!)}
-                            className="flex-shrink-0"
-                          >
-                            <Copy className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    )}
 
                     {domain.verifiedAt && (
                       <p className="text-sm text-muted-foreground">
