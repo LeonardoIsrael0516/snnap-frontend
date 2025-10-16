@@ -1065,14 +1065,40 @@ IMPORTANTE: O usuário fornecerá o HTML atual da página. Use-o como base e fa�
           
           // Verificar se é erro de créditos insuficientes
           if (typeof error === 'string' && error.startsWith('INSUFFICIENT_CREDITS:')) {
-            const [, requiredCredits, action] = error.split(':');
+            const parts = error.split(':');
+            const requiredCredits = parts[1];
+            const action = parts[2];
+            
             console.log('💰 Erro de créditos insuficientes detectado:', { requiredCredits, action });
+            
+            // Tentar extrair informações adicionais se disponíveis
+            let status = 'NO_PLAN';
+            let hasActivePlan = false;
+            let isFreePlan = true;
+            let planName = 'Nenhum';
+            let availableCredits = 0;
+            
+            // Se o erro contém informações adicionais (formato: INSUFFICIENT_CREDITS:credits:action:status:hasActivePlan:isFreePlan:planName:availableCredits)
+            if (parts.length >= 8) {
+              status = parts[3] || 'NO_PLAN';
+              hasActivePlan = parts[4] === 'true';
+              isFreePlan = parts[5] === 'true';
+              planName = parts[6] || 'Nenhum';
+              availableCredits = parseFloat(parts[7]) || 0;
+            }
+            
+            console.log('💰 Status detalhado:', { status, hasActivePlan, isFreePlan, planName, availableCredits });
             
             // Usar localStorage para comunicar com a página principal
             localStorage.setItem('insufficientCredits', JSON.stringify({
               type: 'INSUFFICIENT_CREDITS',
               requiredCredits: parseFloat(requiredCredits),
               action: action,
+              status: status,
+              hasActivePlan: hasActivePlan,
+              isFreePlan: isFreePlan,
+              planName: planName,
+              availableCredits: availableCredits,
               timestamp: Date.now()
             }));
             

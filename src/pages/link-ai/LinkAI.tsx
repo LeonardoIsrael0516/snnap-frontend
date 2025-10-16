@@ -19,6 +19,7 @@ import { InspireBox } from "@/components/InspireBox";
 import { FeaturedTemplates } from "@/components/FeaturedTemplates";
 import InsufficientCreditsModalFree from "@/components/InsufficientCreditsModalFree";
 import InsufficientCreditsModalPaid from "@/components/InsufficientCreditsModalPaid";
+import NoCreditsModal from "@/components/NoCreditsModal";
 
 export default function LinkAI() {
   const navigate = useNavigate();
@@ -40,6 +41,11 @@ export default function LinkAI() {
   const [insufficientCreditsData, setInsufficientCreditsData] = useState<{
     requiredCredits: number;
     action: 'criação' | 'edição' | 'importação';
+    status?: 'NO_PLAN' | 'NO_CREDITS' | 'SUFFICIENT_CREDITS';
+    hasActivePlan?: boolean;
+    isFreePlan?: boolean;
+    planName?: string;
+    availableCredits?: number;
   } | null>(null);
   const [userPlan, setUserPlan] = useState<{ name: string; isFree: boolean } | null>(null);
   useEffect(() => {
@@ -81,7 +87,12 @@ export default function LinkAI() {
           if (Date.now() - data.timestamp < 5000) {
             setInsufficientCreditsData({
               requiredCredits: data.requiredCredits,
-              action: data.action
+              action: data.action,
+              status: data.status,
+              hasActivePlan: data.hasActivePlan,
+              isFreePlan: data.isFreePlan,
+              planName: data.planName,
+              availableCredits: data.availableCredits
             });
             setInsufficientCreditsModalOpen(true);
           }
@@ -756,36 +767,52 @@ export default function LinkAI() {
       {/* Insufficient Credits Modals */}
       {insufficientCreditsData && (
         <>
-          {/* Modal para usuários Free */}
-          {userPlan?.isFree && (
-            <InsufficientCreditsModalFree
-              open={insufficientCreditsModalOpen}
-              onOpenChange={setInsufficientCreditsModalOpen}
-              requiredCredits={insufficientCreditsData.requiredCredits}
-              action={insufficientCreditsData.action}
-              onPlanSelected={(planId) => {
-                console.log('Plano selecionado:', planId);
-                // Aqui você implementaria a lógica de seleção de plano
-                toast.info('Redirecionando para seleção de plano...');
-              }}
-            />
+          {/* Modal para usuários sem plano ativo */}
+          {insufficientCreditsData.status === 'NO_PLAN' && (
+            <>
+              {/* Modal para usuários Free */}
+              {insufficientCreditsData.isFreePlan && (
+                <InsufficientCreditsModalFree
+                  open={insufficientCreditsModalOpen}
+                  onOpenChange={setInsufficientCreditsModalOpen}
+                  requiredCredits={insufficientCreditsData.requiredCredits}
+                  action={insufficientCreditsData.action}
+                  onPlanSelected={(planId) => {
+                    console.log('Plano selecionado:', planId);
+                    toast.info('Redirecionando para seleção de plano...');
+                  }}
+                />
+              )}
+              
+              {/* Modal para usuários com planos pagos mas inativos */}
+              {!insufficientCreditsData.isFreePlan && (
+                <InsufficientCreditsModalPaid
+                  open={insufficientCreditsModalOpen}
+                  onOpenChange={setInsufficientCreditsModalOpen}
+                  requiredCredits={insufficientCreditsData.requiredCredits}
+                  action={insufficientCreditsData.action}
+                  onPlanSelected={(planId) => {
+                    console.log('Plano selecionado:', planId);
+                    toast.info('Redirecionando para seleção de plano...');
+                  }}
+                  onCreditsPurchased={(packageId) => {
+                    console.log('Pacote de créditos selecionado:', packageId);
+                    toast.info('Redirecionando para compra de créditos...');
+                  }}
+                />
+              )}
+            </>
           )}
           
-          {/* Modal para usuários com planos pagos */}
-          {!userPlan?.isFree && (
-            <InsufficientCreditsModalPaid
+          {/* Modal para usuários com plano ativo mas sem créditos */}
+          {insufficientCreditsData.status === 'NO_CREDITS' && (
+            <NoCreditsModal
               open={insufficientCreditsModalOpen}
               onOpenChange={setInsufficientCreditsModalOpen}
               requiredCredits={insufficientCreditsData.requiredCredits}
               action={insufficientCreditsData.action}
-              onPlanSelected={(planId) => {
-                console.log('Plano selecionado:', planId);
-                // Aqui você implementaria a lógica de seleção de plano
-                toast.info('Redirecionando para seleção de plano...');
-              }}
               onCreditsPurchased={(packageId) => {
                 console.log('Pacote de créditos selecionado:', packageId);
-                // Aqui você implementaria a lógica de compra de créditos
                 toast.info('Redirecionando para compra de créditos...');
               }}
             />
