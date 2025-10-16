@@ -25,7 +25,6 @@ import {
   AddDomainDialog,
   DNSInstructionsDialog,
 } from "@/components/domains";
-import { AssociatePageDialog } from "@/components/domains/AssociatePageDialog";
 
 export default function CustomDomains() {
   const navigate = useNavigate();
@@ -36,7 +35,6 @@ export default function CustomDomains() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [selectedDomain, setSelectedDomain] = useState<CustomDomain | null>(null);
   const [domainInfo, setDomainInfo] = useState<any>(null);
-  const [associateDomain, setAssociateDomain] = useState<CustomDomain | null>(null);
 
   useEffect(() => {
     loadDomains();
@@ -198,7 +196,27 @@ export default function CustomDomains() {
           </Button>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <>
+          {/* Informação sobre associação de páginas */}
+          <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-5 h-5 mt-0.5">
+                <Globe className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+                  Como associar páginas aos domínios?
+                </h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  Para que seu domínio funcione, você precisa associar uma página a ele. 
+                  Clique em <strong>"Criar Página"</strong> ou <strong>"Editar Página"</strong> 
+                  e use o botão de domínio personalizado na página de edição.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
           {domains.map((domain) => (
             <Card key={domain.id} className="p-4 md:p-6">
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -264,12 +282,20 @@ export default function CustomDomains() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setAssociateDomain(domain)}
+                      onClick={() => {
+                        if (domain.pageId) {
+                          // Se já tem página associada, vai para edição
+                          navigate(`/link-ai/create?id=${domain.pageId}`);
+                        } else {
+                          // Se não tem página, vai para criação
+                          navigate('/link-ai/create');
+                        }
+                      }}
                       className="flex-1 sm:flex-initial"
                     >
                       <Globe className="w-4 h-4 sm:mr-2" />
                       <span className="hidden sm:inline">
-                        {domain.pageId ? "Editar Página" : "Associar Página"}
+                        {domain.pageId ? "Editar Página" : "Criar Página"}
                       </span>
                     </Button>
                   )}
@@ -311,7 +337,8 @@ export default function CustomDomains() {
               </div>
             </Card>
           ))}
-        </div>
+          </div>
+        </>
       )}
 
       {/* Dialogs */}
@@ -334,17 +361,6 @@ export default function CustomDomains() {
         />
       )}
 
-      {associateDomain && (
-        <AssociatePageDialog
-          domain={associateDomain}
-          open={!!associateDomain}
-          onOpenChange={(open) => !open && setAssociateDomain(null)}
-          onSuccess={() => {
-            loadDomains();
-            setAssociateDomain(null);
-          }}
-        />
-      )}
     </div>
   );
 }
