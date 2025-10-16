@@ -167,6 +167,67 @@ export function DNSInstructionsDialog({
               </div>
             </Card>
 
+            {/* Configuração CNAME */}
+            <Card className="p-4 bg-muted/50">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                Configuração CNAME (Obrigatória)
+              </h4>
+              <div className="space-y-3">
+                <div>
+                  <Label className="text-xs text-muted-foreground">Nome/Host</Label>
+                  <div className="flex items-center gap-2 mt-1">
+                    <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
+                      {domain.domain}
+                    </code>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() =>
+                        copyToClipboard(domain.domain, "Nome do domínio")
+                      }
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Seu domínio personalizado
+                  </p>
+                </div>
+
+                <div>
+                  <Label className="text-xs text-muted-foreground">Tipo</Label>
+                  <div className="flex items-center gap-2 mt-1">
+                    <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
+                      CNAME
+                    </code>
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="text-xs text-muted-foreground">
+                    Valor/Destino
+                  </Label>
+                  <div className="flex items-center gap-2 mt-1">
+                    <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
+                      d05a2h02r6.snnap.link
+                    </code>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() =>
+                        copyToClipboard("d05a2h02r6.snnap.link", "Destino CNAME")
+                      }
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Aponta para o servidor da Snnap
+                  </p>
+                </div>
+              </div>
+            </Card>
 
             <div className="space-y-2 text-sm">
               <p className="flex items-start gap-2">
@@ -197,11 +258,12 @@ export function DNSInstructionsDialog({
             </h4>
             <ul className="text-xs space-y-1 text-blue-800 dark:text-blue-200">
               <li>• <strong>Validação TXT:</strong> O Cloudflare for SaaS usa registro TXT para validar propriedade do domínio</li>
+              <li>• <strong>CNAME Obrigatório:</strong> Configure o CNAME apontando para d05a2h02r6.snnap.link</li>
               <li>• <strong>SSL Automático:</strong> Após validação, o SSL será provisionado automaticamente</li>
               <li>• <strong>Funciona com qualquer domínio:</strong> Apex domains e subdomínios são suportados</li>
               <li>• A propagação DNS pode levar de alguns minutos até 24 horas</li>
-              <li>• O processo de validação pode levar alguns minutos após configurar o TXT</li>
-              <li>• Não é necessário configurar CNAME ou A records - apenas o TXT</li>
+              <li>• O processo de validação pode levar alguns minutos após configurar ambos os registros</li>
+              <li>• <strong>Ambos os registros são necessários:</strong> TXT para validação + CNAME para roteamento</li>
             </ul>
           </Card>
         </div>
