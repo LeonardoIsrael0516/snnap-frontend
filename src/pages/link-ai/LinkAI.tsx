@@ -130,7 +130,12 @@ export default function LinkAI() {
         if (!data.hasCredits) {
           setInsufficientCreditsData({
             requiredCredits,
-            action
+            action,
+            status: data.status || 'NO_PLAN',
+            hasActivePlan: data.hasActivePlan || false,
+            isFreePlan: data.isFreePlan || true,
+            planName: data.planName || 'Nenhum',
+            availableCredits: data.availableCredits || 0
           });
           setInsufficientCreditsModalOpen(true);
           return false;

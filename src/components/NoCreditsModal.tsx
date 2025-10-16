@@ -65,15 +65,32 @@ export default function NoCreditsModal({
   const loadCreditPackages = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/credit-packages`);
+      console.log('🔍 NoCreditsModal: Carregando pacotes de créditos...');
+      console.log('🔍 NoCreditsModal: VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
+      const url = `${import.meta.env.VITE_API_BASE_URL}/credit-packages`;
+      console.log('🔍 NoCreditsModal: URL completa:', url);
+      
+      const response = await fetch(url);
+      console.log('🔍 NoCreditsModal: Response status:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
-        // A API pode retornar { packages: [...] } ou array direto
-        const packagesData = data.packages || data;
-        setCreditPackages(packagesData.filter((pkg: CreditPackage) => pkg.isActive));
+        console.log('🔍 NoCreditsModal: Dados recebidos:', data);
+        
+        // A API pode retornar { creditPackages: [...] } ou { packages: [...] } ou array direto
+        const packagesData = data.creditPackages || data.packages || data;
+        console.log('🔍 NoCreditsModal: Pacotes extraídos:', packagesData);
+        
+        const filteredPackages = packagesData.filter((pkg: CreditPackage) => pkg.isActive);
+        console.log('🔍 NoCreditsModal: Pacotes filtrados:', filteredPackages);
+        
+        setCreditPackages(filteredPackages);
+      } else {
+        console.error('❌ NoCreditsModal: Erro na resposta:', response.status, response.statusText);
+        toast.error('Erro ao carregar pacotes de créditos');
       }
     } catch (error) {
-      console.error('Erro ao carregar pacotes de créditos:', error);
+      console.error('❌ NoCreditsModal: Erro ao carregar pacotes de créditos:', error);
       toast.error('Erro ao carregar pacotes de créditos');
     } finally {
       setLoading(false);
@@ -149,34 +166,17 @@ export default function NoCreditsModal({
           </DialogHeader>
 
           <div className="space-y-6">
-            {/* Informação sobre a ação */}
-            <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
-                  <Coins className="w-5 h-5 text-orange-600" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-orange-800 dark:text-orange-200">
-                    Ação: {action.charAt(0).toUpperCase() + action.slice(1)} de Página
-                  </h4>
-                  <p className="text-sm text-orange-600 dark:text-orange-300">
-                    Necessário: {getCreditRange()} | Disponível: 0 créditos
-                  </p>
-                </div>
-              </div>
-            </div>
-
             {/* Explicação sobre créditos */}
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <div className="bg-gray-800 border border-gray-600 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                  <Zap className="w-4 h-4 text-blue-600" />
+                <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-4 h-4 text-blue-400" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
+                  <h4 className="font-medium text-white mb-2">
                     Como funcionam os créditos?
                   </h4>
-                  <p className="text-sm text-blue-600 dark:text-blue-300">
+                  <p className="text-sm text-gray-300">
                     Você já possui um plano ativo, mas seus créditos mensais foram consumidos. 
                     Compre pacotes de créditos adicionais para continuar criando e editando páginas.
                   </p>
@@ -271,14 +271,14 @@ export default function NoCreditsModal({
             </div>
 
             {/* Informações adicionais */}
-            <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div className="bg-gray-800 border border-gray-600 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-1">
+                  <h4 className="font-medium text-white mb-1">
                     Vantagens dos pacotes de créditos:
                   </h4>
-                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <ul className="text-sm text-gray-300 space-y-1">
                     <li>• Créditos são adicionados instantaneamente à sua conta</li>
                     <li>• Não expiram e podem ser usados a qualquer momento</li>
                     <li>• Ideal para usuários que precisam de créditos extras</li>
