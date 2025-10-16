@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
 import { 
   Coins, 
   CreditCard, 
@@ -19,6 +20,8 @@ import {
   AlertTriangle,
   Star
 } from "lucide-react";
+import CaktoCheckoutModal from "./CaktoCheckoutModal";
+import LoadingPaymentModal from "./LoadingPaymentModal";
 
 interface InsufficientCreditsModalProps {
   open: boolean;
@@ -41,6 +44,7 @@ interface Plan {
   isPopular: boolean;
   isActive: boolean;
   features: string[];
+  caktoCheckoutUrl?: string;
 }
 
 interface CreditPackage {
@@ -52,6 +56,7 @@ interface CreditPackage {
   currency: string;
   discount?: number;
   isActive: boolean;
+  caktoCheckoutUrl?: string;
 }
 
 export default function InsufficientCreditsModal({
@@ -66,6 +71,10 @@ export default function InsufficientCreditsModal({
   const [plans, setPlans] = useState<Plan[]>([]);
   const [creditPackages, setCreditPackages] = useState<CreditPackage[]>([]);
   const [loading, setLoading] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [loadingOpen, setLoadingOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<CreditPackage | null>(null);
 
   // Carregar dados do usuário e planos
   useEffect(() => {
@@ -152,31 +161,39 @@ export default function InsufficientCreditsModal({
     }
   };
 
-  const handlePlanSelect = async (planId: string) => {
-    setLoading(true);
-    try {
-      // Aqui você implementaria a lógica de seleção de plano
-      // Por enquanto, apenas chama o callback
-      onPlanSelected?.(planId);
-      onOpenChange(false);
-    } catch (error) {
-      console.error('Erro ao selecionar plano:', error);
-    } finally {
-      setLoading(false);
-    }
+  const handlePlanSelect = async (plan: Plan) => {
+    setSelectedPlan(plan);
+    setLoadingOpen(true);
+    
+    // Simular carregamento por 2 segundos
+    setTimeout(() => {
+      setLoadingOpen(false);
+      setCheckoutOpen(true);
+    }, 2000);
   };
 
-  const handleCreditsPurchase = async (packageId: string) => {
-    setLoading(true);
-    try {
-      // Aqui você implementaria a lógica de compra de créditos
-      // Por enquanto, apenas chama o callback
-      onCreditsPurchased?.(packageId);
-      onOpenChange(false);
-    } catch (error) {
-      console.error('Erro ao comprar créditos:', error);
-    } finally {
-      setLoading(false);
+  const handleCreditsPurchase = async (package_: CreditPackage) => {
+    setSelectedPackage(package_);
+    setLoadingOpen(true);
+    
+    // Simular carregamento por 2 segundos
+    setTimeout(() => {
+      setLoadingOpen(false);
+      setCheckoutOpen(true);
+    }, 2000);
+  };
+
+  const handleCheckoutSuccess = () => {
+    setCheckoutOpen(false);
+    setSelectedPlan(null);
+    setSelectedPackage(null);
+    toast.success('Pagamento realizado com sucesso!');
+    onOpenChange(false);
+    // Recarregar dados se necessário
+    if (open) {
+      loadUserData();
+      loadPlans();
+      loadCreditPackages();
     }
   };
 
@@ -267,7 +284,7 @@ export default function InsufficientCreditsModal({
                     className={`relative cursor-pointer transition-all hover:shadow-lg ${
                       plan.isPopular ? 'ring-2 ring-primary' : ''
                     }`}
-                    onClick={() => handlePlanSelect(plan.id)}
+                    onClick={() => handlePlanSelect(plan)}
                   >
                     {plan.isPopular && (
                       <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-primary">
@@ -356,7 +373,7 @@ export default function InsufficientCreditsModal({
                   <Card 
                     key={pkg.id} 
                     className="cursor-pointer transition-all hover:shadow-lg"
-                    onClick={() => handleCreditsPurchase(pkg.id)}
+                    onClick={() => handleCreditsPurchase(pkg)}
                   >
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
@@ -418,6 +435,44 @@ export default function InsufficientCreditsModal({
           </div>
         </div>
       </DialogContent>
+
+      {/* Modal de Checkout */}
+      {selectedPlan && selectedPlan.caktoCheckoutUrl && (
+        <CaktoCheckoutModal
+          open={checkoutOpen}
+          onClose={() => setCheckoutOpen(false)}
+          checkoutUrl={selectedPlan.caktoCheckoutUrl}
+          onSuccess={() => {
+            toast.success('Pagamento processado com sucesso!');
+            setCheckoutOpen(false);
+            onOpenChange(false);
+            // Recarregar dados do usuário
+            window.location.reload();
+          }}
+        />
+      )}
+
+      {selectedPackage && selectedPackage.caktoCheckoutUrl && (
+        <CaktoCheckoutModal
+          open={checkoutOpen}
+          onClose={() => setCheckoutOpen(false)}
+          checkoutUrl={selectedPackage.caktoCheckoutUrl}
+          onSuccess={() => {
+            toast.success('Pagamento processado com sucesso!');
+            setCheckoutOpen(false);
+            onOpenChange(false);
+            // Recarregar dados do usuário
+            window.location.reload();
+          }}
+        />
+      )}
+
+      {/* Modal de carregamento */}
+      <LoadingPaymentModal
+        open={loadingOpen}
+        onClose={() => setLoadingOpen(false)}
+        type={selectedPlan ? 'plan' : 'credits'}
+      />
     </Dialog>
   );
 }
