@@ -124,27 +124,27 @@ export default function PWAUpgradeModal({
 
         <div className="space-y-6">
           {/* Informação sobre PWA */}
-          <div className="bg-blue-50/50 dark:bg-blue-900/10 border border-blue-200/20 dark:border-blue-700/20 rounded-lg p-6">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-yellow-500/30 rounded-xl p-6 shadow-2xl">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/20 flex items-center justify-center flex-shrink-0">
-                <Smartphone className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Smartphone className="w-6 h-6 text-gray-900" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   O que é PWA?
                 </h3>
-                <p className="text-blue-700 dark:text-blue-300 mb-3">
+                <p className="text-gray-200 mb-3">
                   PWA (Progressive Web App) transforma suas páginas em apps nativos instaláveis, 
                   com ícone personalizado, tela de carregamento e experiência offline.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-800/20 dark:text-blue-300">
+                  <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 border-0 shadow-md">
                     📱 App instalável
                   </Badge>
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-800/20 dark:text-blue-300">
+                  <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 border-0 shadow-md">
                     🎨 Ícone personalizado
                   </Badge>
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-800/20 dark:text-blue-300">
+                  <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 border-0 shadow-md">
                     ⚡ Experiência nativa
                   </Badge>
                 </div>
