@@ -11,7 +11,7 @@ import { PWAOnboarding } from '@/components/PWAOnboarding';
 import { toast } from 'sonner';
 import { Smartphone, Palette, Upload, Settings, HelpCircle, Crown } from 'lucide-react';
 import { authenticatedFetch } from '@/lib/authService';
-import { PlanUpgradeModal } from './PlanUpgradeModal';
+import InsufficientCreditsModal from './InsufficientCreditsModal';
 
 interface PWASettingsProps {
   page: {
@@ -38,7 +38,7 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
   const [showInstallPrompt, setShowInstallPrompt] = useState(page.pwaShowInstallPrompt !== false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [userPermissions, setUserPermissions] = useState<{pwaEnabled: boolean} | null>(null);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showInsufficientCreditsModal, setShowInsufficientCreditsModal] = useState(false);
   const [pwaConfig, setPwaConfig] = useState({
     name: page.pwaName || page.title,
     shortName: page.pwaShortName || page.title.slice(0, 12),
@@ -89,7 +89,7 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
   const handlePwaEnabledChange = async (enabled: boolean) => {
     // Se está tentando ativar o PWA, verificar permissões
     if (enabled && userPermissions && !userPermissions.pwaEnabled) {
-      setShowUpgradeModal(true);
+      setShowInsufficientCreditsModal(true);
       return;
     }
 
@@ -479,11 +479,20 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
       )}
       </Card>
 
-      {/* Modal de Upgrade de Plano */}
-      <PlanUpgradeModal 
-        open={showUpgradeModal} 
-        onOpenChange={setShowUpgradeModal}
-        feature="PWA"
+      {/* Modal de Créditos Insuficientes para PWA */}
+      <InsufficientCreditsModal
+        open={showInsufficientCreditsModal}
+        onOpenChange={setShowInsufficientCreditsModal}
+        requiredCredits={0}
+        action="criação"
+        onPlanSelected={(planId) => {
+          console.log('Plano selecionado para PWA:', planId);
+          setShowInsufficientCreditsModal(false);
+        }}
+        onCreditsPurchased={(packageId) => {
+          console.log('Pacote de créditos comprado para PWA:', packageId);
+          setShowInsufficientCreditsModal(false);
+        }}
       />
     </>
   );
