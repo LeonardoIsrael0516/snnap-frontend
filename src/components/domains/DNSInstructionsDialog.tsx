@@ -212,13 +212,13 @@ export function DNSInstructionsDialog({
                   </Label>
                   <div className="flex items-center gap-2 mt-1">
                     <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                      {domainInfo?.cname?.target || "snnap.link"}
+                      {domainInfo?.cname?.target || "dns-d5a2h2r6.snnap.link"}
                     </code>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() =>
-                        copyToClipboard(domainInfo?.cname?.target || "snnap.link", "Destino CNAME")
+                        copyToClipboard(domainInfo?.cname?.target || "dns-d5a2h2r6.snnap.link", "Destino CNAME")
                       }
                     >
                       <Copy className="w-4 h-4" />
@@ -260,7 +260,7 @@ export function DNSInstructionsDialog({
             </h4>
             <ul className="text-xs space-y-1 text-blue-800 dark:text-blue-200">
               <li>• <strong>Validação TXT:</strong> O Cloudflare for SaaS usa registro TXT para validar propriedade do domínio</li>
-              <li>• <strong>CNAME Obrigatório:</strong> Configure o CNAME apontando para snnap.link</li>
+              <li>• <strong>CNAME Obrigatório:</strong> Configure o CNAME apontando para dns-d5a2h2r6.snnap.link</li>
               <li>• <strong>SSL Automático:</strong> Após validação, o SSL será provisionado automaticamente</li>
               <li>• <strong>Funciona com qualquer domínio:</strong> Apex domains e subdomínios são suportados</li>
               <li>• A propagação DNS pode levar de alguns minutos até 24 horas</li>
