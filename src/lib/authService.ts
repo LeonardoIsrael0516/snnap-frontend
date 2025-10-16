@@ -180,7 +180,10 @@ export async function authenticatedFetch(
     'Authorization': `Bearer ${token}`,
   };
 
-  const response = await fetch(url, {
+  // Construir URL completa
+  const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+  
+  const response = await fetch(fullUrl, {
     ...options,
     headers,
   });
