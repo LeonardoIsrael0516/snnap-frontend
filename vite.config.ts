@@ -36,13 +36,13 @@ export default defineConfig(({ mode }) => {
     outDir: 'dist',
     sourcemap: false,
     minify: mode === 'production' ? 'terser' : 'esbuild',
-    terserOptions: mode === 'production' ? {
-      compress: {
-        drop_console: true, // remove TODOS os console.*
-        drop_debugger: true // remove debugger
-      },
-      mangle: true // ofusca nomes de variáveis e funções
-    } : undefined,
+    // terserOptions: mode === 'production' ? {
+    //   compress: {
+    //     drop_console: true, // remove TODOS os console.*
+    //     drop_debugger: true // remove debugger
+    //   },
+    //   mangle: true // ofusca nomes de variáveis e funções
+    // } : undefined,
     rollupOptions: {
       output: {
         manualChunks: {
