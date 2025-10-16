@@ -3,15 +3,23 @@ export interface CustomDomain {
   domain: string;
   type: 'LINK_AI' | 'BIOLINK';
   status: 'PENDING' | 'ACTIVE' | 'FAILED';
-  cnameTarget: string;
-  serverIp?: string | null;
-  isApex: boolean;
+  
+  // Cloudflare fields
+  cloudflareHostnameId?: string | null;
+  txtRecordName?: string | null;
+  txtRecordValue?: string | null;
+  sslStatus?: string | null;
+  sslVerificationErrors?: any | null;
+  
+  // Configuração
   verifiedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  slug?: string | null;
   isRootDomain?: boolean;
   pageId?: string | null;
+  slug?: string | null;
+  
+  // Relações
   ai_pages?: Array<{ id: string; title: string; slug: string }>;
   biolinks?: Array<{ id: string; slug: string }>;
 }

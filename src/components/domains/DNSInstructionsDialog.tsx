@@ -86,33 +86,29 @@ export function DNSInstructionsDialog({
               <p className="flex items-start gap-2">
                 <span className="font-semibold min-w-[20px]">3.</span>
                 <span>
-                  {domain.isApex ? (
-                    <>Configure um registro <strong>CNAME</strong> (recomendado) ou <strong>A</strong> (alternativo) com as configurações abaixo:</>
-                  ) : (
-                    <>Adicione um novo registro <strong>CNAME</strong> com as seguintes configurações:</>
-                  )}
+                  Adicione um novo registro <strong>TXT</strong> com as seguintes configurações:
                 </span>
               </p>
             </div>
 
-            {/* Configurações DNS - CNAME */}
+            {/* Configurações DNS - TXT */}
             <Card className="p-4 bg-muted/50">
               <h4 className="font-semibold mb-3 flex items-center gap-2">
-                {domain.isApex && "Opção 1: "}Configuração CNAME {domain.isApex && "(Recomendado)"}
+                Configuração TXT (Cloudflare for SaaS)
               </h4>
               <div className="space-y-3">
                 <div>
                   <Label className="text-xs text-muted-foreground">Nome/Host</Label>
                   <div className="flex items-center gap-2 mt-1">
                     <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                      {domain.domain.includes(".") ? domain.domain.split(".")[0] : "@"}
+                      {domain.txtRecordName || `_cf-custom-hostname.${domain.domain}`}
                     </code>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() =>
                         copyToClipboard(
-                          domain.domain.includes(".") ? domain.domain.split(".")[0] : "@",
+                          domain.txtRecordName || `_cf-custom-hostname.${domain.domain}`,
                           "Nome/Host"
                         )
                       }
@@ -121,7 +117,7 @@ export function DNSInstructionsDialog({
                     </Button>
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Use "@" para domínio raiz ou o subdomínio específico
+                    Nome do registro TXT fornecido pelo Cloudflare
                   </p>
                 </div>
 
@@ -129,29 +125,32 @@ export function DNSInstructionsDialog({
                   <Label className="text-xs text-muted-foreground">Tipo</Label>
                   <div className="flex items-center gap-2 mt-1">
                     <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                      CNAME
+                      TXT
                     </code>
                   </div>
                 </div>
 
                 <div>
                   <Label className="text-xs text-muted-foreground">
-                    Valor/Destino (Target)
+                    Valor
                   </Label>
                   <div className="flex items-center gap-2 mt-1">
-                    <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                      {domain.cnameTarget}
+                    <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono break-all">
+                      {domain.txtRecordValue || "Aguardando geração..."}
                     </code>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() =>
-                        copyToClipboard(domain.cnameTarget, "CNAME Target")
+                        copyToClipboard(domain.txtRecordValue || "", "Valor TXT")
                       }
                     >
                       <Copy className="w-4 h-4" />
                     </Button>
                   </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Valor único para validação de propriedade do domínio
+                  </p>
                 </div>
 
                 <div>
@@ -168,73 +167,6 @@ export function DNSInstructionsDialog({
               </div>
             </Card>
 
-            {/* Configurações DNS - A Record (apenas para apex domains) */}
-            {domain.isApex && domain.serverIp && (
-              <Card className="p-4 bg-muted/50 mt-4">
-                <h4 className="font-semibold mb-3">Opção 2: Configuração A Record (Alternativa)</h4>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Use esta opção se seu provedor não suportar CNAME em domínio raiz
-                </p>
-                <div className="space-y-3">
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Nome/Host</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                        @
-                      </code>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard("@", "Nome/Host")}
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      @ representa o domínio raiz
-                    </p>
-                  </div>
-
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Tipo</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                        A
-                      </code>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-xs text-muted-foreground">
-                      Valor/IP
-                    </Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                        {domain.serverIp}
-                      </code>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() =>
-                          copyToClipboard(domain.serverIp!, "IP do Servidor")
-                        }
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-xs text-muted-foreground">TTL</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                        3600 (ou Automático)
-                      </code>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            )}
 
             <div className="space-y-2 text-sm">
               <p className="flex items-start gap-2">
@@ -264,22 +196,12 @@ export function DNSInstructionsDialog({
               📌 Observações Importantes
             </h4>
             <ul className="text-xs space-y-1 text-blue-800 dark:text-blue-200">
-              {domain.isApex ? (
-                <>
-                  <li>• <strong>Domínio Raiz:</strong> Alguns provedores não suportam CNAME em domínio raiz (@)</li>
-                  <li>• Se CNAME não funcionar, use a configuração alternativa com A Record</li>
-                  <li>• Alguns provedores (como Cloudflare) suportam CNAME flattening no raiz</li>
-                </>
-              ) : (
-                <>
-                  <li>• <strong>Subdomínio:</strong> Use sempre CNAME para subdomínios</li>
-                  <li>• Alguns provedores podem exigir um ponto final no CNAME (ex: target.com.)</li>
-                </>
-              )}
-              <li>• A propagação DNS pode levar de alguns minutos até 48 horas</li>
-              <li>
-                • Se estiver usando Cloudflare, desative o proxy (nuvem cinza) temporariamente para verificação
-              </li>
+              <li>• <strong>Validação TXT:</strong> O Cloudflare for SaaS usa registro TXT para validar propriedade do domínio</li>
+              <li>• <strong>SSL Automático:</strong> Após validação, o SSL será provisionado automaticamente</li>
+              <li>• <strong>Funciona com qualquer domínio:</strong> Apex domains e subdomínios são suportados</li>
+              <li>• A propagação DNS pode levar de alguns minutos até 24 horas</li>
+              <li>• O processo de validação pode levar alguns minutos após configurar o TXT</li>
+              <li>• Não é necessário configurar CNAME ou A records - apenas o TXT</li>
             </ul>
           </Card>
         </div>

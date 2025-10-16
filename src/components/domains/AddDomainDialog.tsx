@@ -55,7 +55,7 @@ export function AddDomainDialog({
 
       toast({
         title: "Domínio adicionado!",
-        description: `Configure o DNS para ativar: ${result.cnameTarget}`,
+        description: `Configure o registro TXT no seu DNS para ativar o domínio.`,
       });
 
       setDomain("");
@@ -120,7 +120,7 @@ export function AddDomainDialog({
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground">
-                Cada tipo de serviço usa um CNAME diferente
+                Você receberá instruções TXT para configurar no DNS
               </p>
             </div>
           </div>
