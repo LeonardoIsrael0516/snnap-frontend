@@ -25,6 +25,7 @@ import {
   AddDomainDialog,
   DNSInstructionsDialog,
 } from "@/components/domains";
+import { AssociatePageDialog } from "@/components/domains/AssociatePageDialog";
 
 export default function CustomDomains() {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ export default function CustomDomains() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [selectedDomain, setSelectedDomain] = useState<CustomDomain | null>(null);
   const [domainInfo, setDomainInfo] = useState<any>(null);
+  const [associateDomain, setAssociateDomain] = useState<CustomDomain | null>(null);
 
   useEffect(() => {
     loadDomains();
@@ -258,6 +260,20 @@ export default function CustomDomains() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 md:ml-4">
+                  {domain.status === 'ACTIVE' && domain.type === 'LINK_AI' && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setAssociateDomain(domain)}
+                      className="flex-1 sm:flex-initial"
+                    >
+                      <Globe className="w-4 h-4 sm:mr-2" />
+                      <span className="hidden sm:inline">
+                        {domain.pageId ? "Editar Página" : "Associar Página"}
+                      </span>
+                    </Button>
+                  )}
+                  
                   <Button
                     variant="outline"
                     size="sm"
@@ -315,6 +331,18 @@ export default function CustomDomains() {
           open={!!selectedDomain}
           onOpenChange={(open) => !open && setSelectedDomain(null)}
           onVerify={() => handleVerifyDomain(selectedDomain.id)}
+        />
+      )}
+
+      {associateDomain && (
+        <AssociatePageDialog
+          domain={associateDomain}
+          open={!!associateDomain}
+          onOpenChange={(open) => !open && setAssociateDomain(null)}
+          onSuccess={() => {
+            loadDomains();
+            setAssociateDomain(null);
+          }}
         />
       )}
     </div>
