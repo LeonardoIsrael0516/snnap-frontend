@@ -1,4 +1,8 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+// Em desenvolvimento, usar proxy do Vite (/api)
+// Em produção, usar URL completa
+const API_BASE_URL = import.meta.env.DEV 
+  ? '/api' 
+  : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api');
 
 interface TokenData {
   accessToken: string;
