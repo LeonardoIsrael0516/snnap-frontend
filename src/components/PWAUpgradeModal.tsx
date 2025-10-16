@@ -124,10 +124,10 @@ export default function PWAUpgradeModal({
 
         <div className="space-y-6">
           {/* Informação sobre PWA */}
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-yellow-500/30 rounded-xl p-6 shadow-2xl">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-purple-500/30 rounded-xl p-6 shadow-2xl">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center flex-shrink-0 shadow-lg">
-                <Smartphone className="w-6 h-6 text-gray-900" />
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Smartphone className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">
@@ -138,13 +138,13 @@ export default function PWAUpgradeModal({
                   com ícone personalizado, tela de carregamento e experiência offline.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 border-0 shadow-md">
+                  <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 shadow-md">
                     📱 App instalável
                   </Badge>
-                  <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 border-0 shadow-md">
+                  <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 shadow-md">
                     🎨 Ícone personalizado
                   </Badge>
-                  <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 border-0 shadow-md">
+                  <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 shadow-md">
                     ⚡ Experiência nativa
                   </Badge>
                 </div>
