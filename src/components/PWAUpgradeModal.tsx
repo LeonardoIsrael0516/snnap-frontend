@@ -50,11 +50,14 @@ export default function PWAUpgradeModal({
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [loadingOpen, setLoadingOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [selectedCheckoutUrl, setSelectedCheckoutUrl] = useState<string>('');
+  const [userData, setUserData] = useState<{ name: string; email: string } | null>(null);
 
   // Carregar planos que incluem PWA
   useEffect(() => {
     if (open) {
       loadPlans();
+      loadUserData();
     }
   }, [open]);
 
@@ -87,8 +90,59 @@ export default function PWAUpgradeModal({
     }
   };
 
+  const loadUserData = async () => {
+    try {
+      // Tentar obter dados do localStorage primeiro
+      const userDataFromStorage = localStorage.getItem('user');
+      if (userDataFromStorage) {
+        const user = JSON.parse(userDataFromStorage);
+        setUserData({
+          name: user.name || '',
+          email: user.email || ''
+        });
+        return;
+      }
+
+      // Se não tiver no localStorage, buscar da API
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/profile`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData({
+          name: data.name || '',
+          email: data.email || ''
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao carregar dados do usuário:', error);
+    }
+  };
+
   const handlePlanSelect = async (plan: Plan) => {
     setSelectedPlan(plan);
+    
+    // Adicionar parâmetros do usuário à URL do checkout
+    let checkoutUrl = plan.caktoCheckoutUrl || '';
+    
+    if (userData?.name && userData?.email && checkoutUrl) {
+      const params = new URLSearchParams({
+        name: userData.name,
+        email: userData.email
+      });
+      
+      // Verificar se a URL já tem parâmetros
+      const separator = checkoutUrl.includes('?') ? '&' : '?';
+      checkoutUrl = `${checkoutUrl}${separator}${params.toString()}`;
+      
+      console.log('🔗 PWA Upgrade: URL do checkout com parâmetros:', checkoutUrl);
+    }
+    
+    setSelectedCheckoutUrl(checkoutUrl);
     setLoadingOpen(true);
     
     // Simular carregamento por 2 segundos
@@ -273,11 +327,11 @@ export default function PWAUpgradeModal({
       </DialogContent>
 
       {/* Modal de Checkout */}
-      {selectedPlan && selectedPlan.caktoCheckoutUrl && (
+      {selectedPlan && selectedCheckoutUrl && (
         <CaktoCheckoutModal
           open={checkoutOpen}
           onClose={() => setCheckoutOpen(false)}
-          checkoutUrl={selectedPlan.caktoCheckoutUrl}
+          checkoutUrl={selectedCheckoutUrl}
           onSuccess={() => {
             toast.success('Pagamento processado com sucesso!');
             setCheckoutOpen(false);

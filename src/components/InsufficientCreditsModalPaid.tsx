@@ -74,12 +74,14 @@ export default function InsufficientCreditsModalPaid({
   const [caktoModalOpen, setCaktoModalOpen] = useState(false);
   const [loadingOpen, setLoadingOpen] = useState(false);
   const [selectedCheckoutUrl, setSelectedCheckoutUrl] = useState<string>('');
+  const [userData, setUserData] = useState<{ name: string; email: string } | null>(null);
 
   // Carregar dados
   useEffect(() => {
     if (open) {
       loadPlans();
       loadCreditPackages();
+      loadUserData();
     }
   }, [open]);
 
@@ -112,10 +114,59 @@ export default function InsufficientCreditsModalPaid({
     }
   };
 
+  const loadUserData = async () => {
+    try {
+      // Tentar obter dados do localStorage primeiro
+      const userDataFromStorage = localStorage.getItem('user');
+      if (userDataFromStorage) {
+        const user = JSON.parse(userDataFromStorage);
+        setUserData({
+          name: user.name || '',
+          email: user.email || ''
+        });
+        return;
+      }
+
+      // Se não tiver no localStorage, buscar da API
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/profile`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData({
+          name: data.name || '',
+          email: data.email || ''
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao carregar dados do usuário:', error);
+    }
+  };
+
   const handlePlanSelect = (planId: string) => {
     const plan = plans.find(p => p.id === planId);
     if (plan?.caktoCheckoutUrl) {
-      setSelectedCheckoutUrl(plan.caktoCheckoutUrl);
+      // Adicionar parâmetros do usuário à URL do checkout
+      let checkoutUrl = plan.caktoCheckoutUrl;
+      
+      if (userData?.name && userData?.email) {
+        const params = new URLSearchParams({
+          name: userData.name,
+          email: userData.email
+        });
+        
+        // Verificar se a URL já tem parâmetros
+        const separator = checkoutUrl.includes('?') ? '&' : '?';
+        checkoutUrl = `${checkoutUrl}${separator}${params.toString()}`;
+        
+        console.log('🔗 URL do checkout com parâmetros:', checkoutUrl);
+      }
+      
+      setSelectedCheckoutUrl(checkoutUrl);
       setLoadingOpen(true);
       
       // Simular carregamento por 2 segundos
@@ -135,7 +186,23 @@ export default function InsufficientCreditsModalPaid({
   const handleCreditsPurchase = (packageId: string) => {
     const pkg = creditPackages.find(p => p.id === packageId);
     if (pkg?.caktoCheckoutUrl) {
-      setSelectedCheckoutUrl(pkg.caktoCheckoutUrl);
+      // Adicionar parâmetros do usuário à URL do checkout
+      let checkoutUrl = pkg.caktoCheckoutUrl;
+      
+      if (userData?.name && userData?.email) {
+        const params = new URLSearchParams({
+          name: userData.name,
+          email: userData.email
+        });
+        
+        // Verificar se a URL já tem parâmetros
+        const separator = checkoutUrl.includes('?') ? '&' : '?';
+        checkoutUrl = `${checkoutUrl}${separator}${params.toString()}`;
+        
+        console.log('🔗 URL do checkout com parâmetros:', checkoutUrl);
+      }
+      
+      setSelectedCheckoutUrl(checkoutUrl);
       setLoadingOpen(true);
       
       // Simular carregamento por 2 segundos
