@@ -46,7 +46,7 @@ export function getRefreshToken(): string | null {
 }
 
 /**
- * Verifica se o token está próximo de expirar (< 5 minutos)
+ * Verifica se o token está próximo de expirar (< 1 dia)
  */
 export function isTokenExpiringSoon(): boolean {
   const expiresAt = localStorage.getItem('tokenExpiresAt');
@@ -54,9 +54,9 @@ export function isTokenExpiringSoon(): boolean {
   
   const expiresAtTimestamp = parseInt(expiresAt, 10);
   const now = Date.now();
-  const fiveMinutesInMs = 5 * 60 * 1000;
+  const oneDayInMs = 24 * 60 * 60 * 1000; // 1 dia antes de expirar
   
-  return (expiresAtTimestamp - now) < fiveMinutesInMs;
+  return (expiresAtTimestamp - now) < oneDayInMs;
 }
 
 /**
@@ -221,7 +221,7 @@ export async function authenticatedFetch(
  * Inicia o timer de renovação automática de token
  */
 export function startTokenRefreshTimer(): void {
-  // Verificar a cada minuto se precisa renovar
+  // Verificar a cada 10 minutos se precisa renovar
   setInterval(async () => {
     const token = getAccessToken();
     if (!token) return;
@@ -230,7 +230,7 @@ export function startTokenRefreshTimer(): void {
       console.log('🔄 Token expirando em breve, renovando automaticamente...');
       await refreshAccessToken();
     }
-  }, 60 * 1000); // 1 minuto
+  }, 10 * 60 * 1000); // 10 minutos
 }
 
 /**
