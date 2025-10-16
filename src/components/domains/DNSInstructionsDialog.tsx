@@ -14,6 +14,7 @@ import { type CustomDomain } from "@/lib/customDomains";
 
 interface DNSInstructionsDialogProps {
   domain: CustomDomain;
+  domainInfo?: any;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onVerify: () => void;
@@ -21,6 +22,7 @@ interface DNSInstructionsDialogProps {
 
 export function DNSInstructionsDialog({
   domain,
+  domainInfo,
   open,
   onOpenChange,
   onVerify,
@@ -210,13 +212,13 @@ export function DNSInstructionsDialog({
                   </Label>
                   <div className="flex items-center gap-2 mt-1">
                     <code className="flex-1 px-3 py-2 bg-background rounded border text-sm font-mono">
-                      d05a2h02r6.snnap.link
+                      {domainInfo?.cname?.target || "d05a2h02r6.snnap.link"}
                     </code>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() =>
-                        copyToClipboard("d05a2h02r6.snnap.link", "Destino CNAME")
+                        copyToClipboard(domainInfo?.cname?.target || "d05a2h02r6.snnap.link", "Destino CNAME")
                       }
                     >
                       <Copy className="w-4 h-4" />

@@ -24,7 +24,7 @@ import { addCustomDomain } from "@/lib/customDomains";
 interface AddDomainDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: () => void;
+  onSuccess: (domainInfo?: any) => void;
 }
 
 export function AddDomainDialog({
@@ -61,7 +61,7 @@ export function AddDomainDialog({
       setDomain("");
       setType("LINK_AI");
       onOpenChange(false);
-      onSuccess();
+      onSuccess(result);
     } catch (error: any) {
       toast({
         title: "Erro ao adicionar domínio",

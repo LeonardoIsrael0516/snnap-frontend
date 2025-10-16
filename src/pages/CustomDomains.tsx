@@ -34,6 +34,7 @@ export default function CustomDomains() {
   const [verifyingId, setVerifyingId] = useState<string | null>(null);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [selectedDomain, setSelectedDomain] = useState<CustomDomain | null>(null);
+  const [domainInfo, setDomainInfo] = useState<any>(null);
 
   useEffect(() => {
     loadDomains();
@@ -324,12 +325,16 @@ export default function CustomDomains() {
       <AddDomainDialog
         open={showAddDialog}
         onOpenChange={setShowAddDialog}
-        onSuccess={loadDomains}
+        onSuccess={(domainInfo) => {
+          setDomainInfo(domainInfo);
+          loadDomains();
+        }}
       />
 
       {selectedDomain && (
         <DNSInstructionsDialog
           domain={selectedDomain}
+          domainInfo={domainInfo}
           open={!!selectedDomain}
           onOpenChange={(open) => !open && setSelectedDomain(null)}
           onVerify={() => handleVerifyDomain(selectedDomain.id)}
