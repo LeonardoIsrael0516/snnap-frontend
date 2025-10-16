@@ -56,13 +56,18 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
   useEffect(() => {
     const loadUserPermissions = async () => {
       try {
+        console.log('🔍 PWA: Carregando permissões do usuário...');
         const response = await authenticatedFetch('/api/user/permissions');
         if (response.ok) {
           const permissions = await response.json();
+          console.log('🔍 PWA: Permissões carregadas:', permissions);
+          console.log('🔍 PWA: pwaEnabled:', permissions.pwaEnabled);
           setUserPermissions(permissions);
+        } else {
+          console.error('❌ PWA: Erro na resposta:', response.status);
         }
       } catch (error) {
-        console.error('Erro ao carregar permissões:', error);
+        console.error('❌ PWA: Erro ao carregar permissões:', error);
       }
     };
 
@@ -87,11 +92,19 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
 
   // Salvar automaticamente quando desativar PWA
   const handlePwaEnabledChange = async (enabled: boolean) => {
+    console.log('🔍 PWA: handlePwaEnabledChange chamado');
+    console.log('🔍 PWA: enabled:', enabled);
+    console.log('🔍 PWA: userPermissions:', userPermissions);
+    console.log('🔍 PWA: userPermissions.pwaEnabled:', userPermissions?.pwaEnabled);
+    
     // Se está tentando ativar o PWA, verificar permissões
     if (enabled && userPermissions && !userPermissions.pwaEnabled) {
+      console.log('🚫 PWA: Usuário não tem permissão para PWA, abrindo modal de créditos');
       setShowInsufficientCreditsModal(true);
       return;
     }
+    
+    console.log('✅ PWA: Usuário tem permissão para PWA, prosseguindo...');
 
     setPwaEnabled(enabled);
     
