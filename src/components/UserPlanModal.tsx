@@ -54,6 +54,7 @@ interface Plan {
   pwaEnabled: boolean;
   isPopular: boolean;
   features: string[];
+  caktoCheckoutUrl?: string;
 }
 
 interface CreditPackage {
@@ -64,6 +65,7 @@ interface CreditPackage {
   price: number;
   currency: string;
   discount: number | null;
+  caktoCheckoutUrl?: string;
 }
 
 interface UserPlanModalProps {
@@ -81,6 +83,8 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
   const [loadingOpen, setLoadingOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedPackage, setSelectedPackage] = useState<CreditPackage | null>(null);
+  const [selectedCheckoutUrl, setSelectedCheckoutUrl] = useState<string>('');
+  const [userData, setUserData] = useState<{ name: string; email: string } | null>(null);
 
   useEffect(() => {
     if (open) {
@@ -94,7 +98,8 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
       await Promise.all([
         loadPermissions(),
         loadPlans(),
-        loadCreditPackages()
+        loadCreditPackages(),
+        loadUserData()
       ]);
     } finally {
       setLoading(false);
@@ -146,6 +151,36 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
     }
   };
 
+  const loadUserData = async () => {
+    try {
+      // Tentar obter dados do localStorage primeiro
+      const userDataFromStorage = localStorage.getItem('user');
+      if (userDataFromStorage) {
+        const user = JSON.parse(userDataFromStorage);
+        setUserData({
+          name: user.name || '',
+          email: user.email || ''
+        });
+        return;
+      }
+
+      // Se não tiver no localStorage, buscar da API
+      const response = await fetch(`${API_BASE_URL}/user/profile`, {
+        headers: getAuthHeaders()
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData({
+          name: data.name || '',
+          email: data.email || ''
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao carregar dados do usuário:', error);
+    }
+  };
+
   const formatPrice = (price: number, currency: string) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -163,6 +198,24 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
 
   const handleUpgradePlan = (plan: Plan) => {
     setSelectedPlan(plan);
+    
+    // Adicionar parâmetros do usuário à URL do checkout
+    let checkoutUrl = plan.caktoCheckoutUrl || '';
+    
+    if (userData?.name && userData?.email && checkoutUrl) {
+      const params = new URLSearchParams({
+        name: userData.name,
+        email: userData.email
+      });
+      
+      // Verificar se a URL já tem parâmetros
+      const separator = checkoutUrl.includes('?') ? '&' : '?';
+      checkoutUrl = `${checkoutUrl}${separator}${params.toString()}`;
+      
+      console.log('🔗 UserPlanModal: URL do checkout com parâmetros:', checkoutUrl);
+    }
+    
+    setSelectedCheckoutUrl(checkoutUrl);
     setLoadingOpen(true);
     
     // Simular carregamento por 2 segundos
@@ -174,6 +227,24 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
 
   const handleBuyCredits = (package_: CreditPackage) => {
     setSelectedPackage(package_);
+    
+    // Adicionar parâmetros do usuário à URL do checkout
+    let checkoutUrl = package_.caktoCheckoutUrl || '';
+    
+    if (userData?.name && userData?.email && checkoutUrl) {
+      const params = new URLSearchParams({
+        name: userData.name,
+        email: userData.email
+      });
+      
+      // Verificar se a URL já tem parâmetros
+      const separator = checkoutUrl.includes('?') ? '&' : '?';
+      checkoutUrl = `${checkoutUrl}${separator}${params.toString()}`;
+      
+      console.log('🔗 UserPlanModal: URL do checkout com parâmetros:', checkoutUrl);
+    }
+    
+    setSelectedCheckoutUrl(checkoutUrl);
     setLoadingOpen(true);
     
     // Simular carregamento por 2 segundos
@@ -474,11 +545,11 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
       </DialogContent>
 
       {/* Modal de Checkout */}
-      {selectedPlan && selectedPlan.caktoCheckoutUrl && (
+      {selectedPlan && selectedCheckoutUrl && (
         <CaktoCheckoutModal
           open={checkoutOpen}
           onClose={() => setCheckoutOpen(false)}
-          checkoutUrl={selectedPlan.caktoCheckoutUrl}
+          checkoutUrl={selectedCheckoutUrl}
           onSuccess={() => {
             toast.success('Pagamento processado com sucesso!');
             setCheckoutOpen(false);
@@ -488,11 +559,11 @@ export default function UserPlanModal({ open, onOpenChange }: UserPlanModalProps
         />
       )}
 
-      {selectedPackage && selectedPackage.caktoCheckoutUrl && (
+      {selectedPackage && selectedCheckoutUrl && (
         <CaktoCheckoutModal
           open={checkoutOpen}
           onClose={() => setCheckoutOpen(false)}
-          checkoutUrl={selectedPackage.caktoCheckoutUrl}
+          checkoutUrl={selectedCheckoutUrl}
           onSuccess={() => {
             toast.success('Pagamento processado com sucesso!');
             setCheckoutOpen(false);
