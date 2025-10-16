@@ -57,7 +57,7 @@ export function PWASettings({ page, onUpdate }: PWASettingsProps) {
     const loadUserPermissions = async () => {
       try {
         console.log('🔍 PWA: Carregando permissões do usuário...');
-        const response = await authenticatedFetch('/api/user/permissions');
+        const response = await authenticatedFetch('http://localhost:3001/api/user/permissions');
         if (response.ok) {
           const permissions = await response.json();
           console.log('🔍 PWA: Permissões carregadas:', permissions);
