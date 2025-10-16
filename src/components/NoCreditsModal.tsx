@@ -187,7 +187,7 @@ export default function NoCreditsModal({
             {/* Pacotes de Créditos */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <ShoppingCart className="w-5 h-5 text-green-600" />
+                <ShoppingCart className="w-5 h-5 text-purple-600" />
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                   Pacotes de Créditos Disponíveis
                 </h3>
@@ -195,7 +195,7 @@ export default function NoCreditsModal({
 
               {loading ? (
                 <div className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
                   <span className="ml-2 text-gray-600 dark:text-gray-400">Carregando pacotes...</span>
                 </div>
               ) : (
@@ -208,12 +208,12 @@ export default function NoCreditsModal({
                     >
                       <CardHeader className="text-center pb-2">
                         <div className="flex items-center justify-center gap-2 mb-2">
-                          <Coins className="h-6 w-6 text-green-500" />
+                          <Coins className="h-6 w-6 text-purple-500" />
                           <CardTitle className="text-lg text-white">
                             {pkg.name}
                           </CardTitle>
                         </div>
-                        <div className="text-3xl font-bold text-green-400">
+                        <div className="text-3xl font-bold text-purple-400">
                           {pkg.currency === 'BRL' ? 'R$' : '$'}{pkg.price}
                         </div>
                         <CardDescription className="text-sm text-gray-300">
@@ -224,7 +224,7 @@ export default function NoCreditsModal({
                       <CardContent className="pt-0">
                         <div className="space-y-3">
                           <div className="flex items-center justify-center gap-2">
-                            <Coins className="h-4 w-4 text-green-500" />
+                            <Coins className="h-4 w-4 text-purple-500" />
                             <span className="text-sm font-medium text-gray-300">
                               {pkg.credits} créditos
                             </span>
@@ -273,7 +273,7 @@ export default function NoCreditsModal({
             {/* Informações adicionais */}
             <div className="bg-gray-800 border border-gray-600 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <Check className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-medium text-white mb-1">
                     Vantagens dos pacotes de créditos:
