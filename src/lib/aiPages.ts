@@ -141,7 +141,7 @@ export const aiPagesService = {
   async getById(id: string): Promise<AIPage> {
     try {
       const headers = await getAuthHeaders();
-      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'https://snnap-link-ai.onrender.com/api';
       const response = await fetch(`${LINK_AI_URL}/ai-pages/${id}`, {
         headers,
       });
@@ -166,7 +166,7 @@ export const aiPagesService = {
            }
 
            try {
-             const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+             const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'https://snnap-link-ai.onrender.com/api';
              console.log('🔄 aiPagesService.create - Enviando requisição para:', `${LINK_AI_URL}/ai-pages`);
              
              // Adicionar timeout de 60 segundos (IA pode demorar)
@@ -245,7 +245,7 @@ export const aiPagesService = {
         directCreation: true,
       };
 
-      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'https://snnap-link-ai.onrender.com/api';
       console.log('🔄 aiPagesService.createWithHTML - Enviando requisição para:', `${LINK_AI_URL}/ai-pages`);
       
       const headers = await getAuthHeaders();
@@ -344,7 +344,7 @@ export const aiPagesService = {
         convertedUpdates.customDomainId = updatesAny.customDomainId;
       }
 
-      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'https://snnap-link-ai.onrender.com/api';
       console.log('🔄 aiPagesService.update - Enviando requisição para:', `${LINK_AI_URL}/ai-pages/${id}`);
       console.log('🔄 aiPagesService.update - Dados convertidos:', convertedUpdates);
       
@@ -379,7 +379,7 @@ export const aiPagesService = {
   async delete(id: string): Promise<void> {
     try {
       const headers = await getAuthHeaders();
-      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+      const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'https://snnap-link-ai.onrender.com/api';
       const response = await fetch(`${LINK_AI_URL}/ai-pages/${id}`, {
         method: 'DELETE',
         headers,
@@ -462,7 +462,7 @@ export const streamCreatePage = async ({ messages, onDelta, onDone, onError, pag
     };
 
     // Use real streaming endpoint from Link AI
-    const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'http://localhost:3002/api';
+    const LINK_AI_URL = import.meta.env.VITE_LINK_AI_API_URL || 'https://snnap-link-ai.onrender.com/api';
     console.log('📤 Enviando requisição para:', `${LINK_AI_URL}/ai-pages/stream`);
     console.log('📤 Dados completos:', JSON.stringify(createData, null, 2));
     console.log('📤 Dados:', createData);

@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_BIOLINK_API_URL || 'http://localhost:3003';
+const API_BASE_URL = import.meta.env.VITE_BIOLINK_API_URL || 'https://snnap-biolink.onrender.com';
 
 export interface UploadResponse {
   success: boolean;
