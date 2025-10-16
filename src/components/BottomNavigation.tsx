@@ -1,35 +1,41 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Sparkles, Menu } from "lucide-react";
+import { Sparkles, Menu, Lightbulb } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MobileMenu } from "./MobileMenu";
+import { InspireBox } from "./InspireBox";
 
 export function BottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [inspireBoxOpen, setInspireBoxOpen] = useState(false);
 
   const navItems = [
-    {
-      id: "board",
-      label: "Board",
-      icon: LayoutDashboard,
-      path: "/dashboard",
-    },
     {
       id: "snnap",
       label: "Snnap",
       icon: Sparkles,
       path: "/link-ai",
     },
+    {
+      id: "inspirebox",
+      label: "Inspirebox",
+      icon: Lightbulb,
+      action: "inspirebox",
+    },
   ];
 
   const isActive = (path: string) => {
-    // For dashboard, also match root path
-    if (path === "/dashboard") {
-      return location.pathname === "/" || location.pathname === "/dashboard";
-    }
     return location.pathname === path || location.pathname.startsWith(path + "/");
+  };
+
+  const handleNavClick = (item: any) => {
+    if (item.action === "inspirebox") {
+      setInspireBoxOpen(true);
+    } else if (item.path) {
+      navigate(item.path);
+    }
   };
 
   return (
@@ -40,12 +46,12 @@ export function BottomNavigation() {
           <div className="flex items-center justify-around">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const active = isActive(item.path);
+              const active = item.path ? isActive(item.path) : false;
               
               return (
                 <button
                   key={item.id}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => handleNavClick(item)}
                   className="relative flex flex-col items-center justify-center gap-1.5 px-4 py-2 transition-all duration-300 group text-slate-300"
                 >
                   {/* Active indicator - bar on top */}
@@ -83,6 +89,17 @@ export function BottomNavigation() {
 
       {/* Spacer to prevent content from being hidden behind bottom nav */}
       <div className="h-20 md:hidden" />
+
+      {/* InspireBox Modal */}
+      <InspireBox
+        open={inspireBoxOpen}
+        onOpenChange={setInspireBoxOpen}
+        onImportTemplate={(templateId) => {
+          // Redirecionar para criar página com template
+          navigate(`/link-ai/create?template=${templateId}`);
+          setInspireBoxOpen(false);
+        }}
+      />
     </>
   );
 }
