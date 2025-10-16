@@ -22,31 +22,15 @@ export interface DNSVerificationResult {
   error?: string;
 }
 
-/**
- * Obtém headers de autenticação
- */
-const getAuthHeaders = async () => {
-  const { getValidToken } = await import('./authService');
-  const token = await getValidToken();
-  
-  if (!token) {
-    throw new Error('Token não disponível');
-  }
-  
-  return {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  };
-};
 
 /**
  * Lista todos os domínios personalizados do usuário
  */
 export async function listCustomDomains(): Promise<CustomDomain[]> {
   try {
-    const response = await fetch('/api/domains', {
+    const { authenticatedFetch } = await import('./authService');
+    const response = await authenticatedFetch('/api/domains', {
       method: 'GET',
-      headers: await getAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -74,9 +58,12 @@ export async function addCustomDomain(
   verification: DNSVerificationResult;
 }> {
   try {
-    const response = await fetch('/api/domains/add', {
+    const { authenticatedFetch } = await import('./authService');
+    const response = await authenticatedFetch('/api/domains/add', {
       method: 'POST',
-      headers: await getAuthHeaders(),
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ domain, type }),
     });
 
@@ -103,9 +90,12 @@ export async function verifyCustomDomain(
   verification: DNSVerificationResult;
 }> {
   try {
-    const response = await fetch('/api/domains/verify', {
+    const { authenticatedFetch } = await import('./authService');
+    const response = await authenticatedFetch('/api/domains/verify', {
       method: 'POST',
-      headers: await getAuthHeaders(),
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ domainId }),
     });
 
@@ -127,9 +117,9 @@ export async function verifyCustomDomain(
  */
 export async function deleteCustomDomain(domainId: string): Promise<void> {
   try {
-    const response = await fetch(`/api/domains/${domainId}`, {
+    const { authenticatedFetch } = await import('./authService');
+    const response = await authenticatedFetch(`/api/domains/${domainId}`, {
       method: 'DELETE',
-      headers: await getAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -154,9 +144,12 @@ export async function updateCustomDomain(
   }
 ): Promise<CustomDomain> {
   try {
-    const response = await fetch(`/api/domains/${domainId}`, {
+    const { authenticatedFetch } = await import('./authService');
+    const response = await authenticatedFetch(`/api/domains/${domainId}`, {
       method: 'PUT',
-      headers: await getAuthHeaders(),
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(updates),
     });
 
