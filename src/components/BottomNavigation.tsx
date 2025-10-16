@@ -95,9 +95,9 @@ export function BottomNavigation() {
         open={inspireBoxOpen}
         onOpenChange={setInspireBoxOpen}
         onImportTemplate={(templateId) => {
-          // Redirecionar para criar página com template
-          navigate(`/link-ai/create?template=${templateId}`);
+          // Fechar modal e voltar para página principal
           setInspireBoxOpen(false);
+          navigate('/link-ai');
         }}
       />
     </>
