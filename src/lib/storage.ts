@@ -58,7 +58,7 @@ class StorageService {
   async getConfigs(): Promise<{ success: boolean; data?: StorageConfig[]; error?: string }> {
     try {
       const response = await fetch(`${API_BASE_URL}/storage/config`, {
-        headers: this.getAuthHeaders(),
+        headers: await this.getAuthHeaders(),
       });
 
       const data = await response.json();
@@ -74,7 +74,7 @@ class StorageService {
     try {
       const response = await fetch(`${API_BASE_URL}/storage/config`, {
         method: 'POST',
-        headers: this.getAuthHeaders(),
+        headers: await this.getAuthHeaders(),
         body: JSON.stringify(config),
       });
 
@@ -91,7 +91,7 @@ class StorageService {
     try {
       const response = await fetch(`${API_BASE_URL}/storage/config/${id}`, {
         method: 'PUT',
-        headers: this.getAuthHeaders(),
+        headers: await this.getAuthHeaders(),
         body: JSON.stringify(config),
       });
 
@@ -108,7 +108,7 @@ class StorageService {
     try {
       const response = await fetch(`${API_BASE_URL}/storage/config/${id}`, {
         method: 'DELETE',
-        headers: this.getAuthHeaders(),
+        headers: await this.getAuthHeaders(),
       });
 
       const data = await response.json();
@@ -124,7 +124,7 @@ class StorageService {
     try {
       const response = await fetch(`${API_BASE_URL}/storage/test`, {
         method: 'POST',
-        headers: this.getAuthHeaders(),
+        headers: await this.getAuthHeaders(),
         body: JSON.stringify(config),
       });
 
