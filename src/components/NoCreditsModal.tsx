@@ -53,7 +53,7 @@ export default function NoCreditsModal({
   const [loading, setLoading] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [loadingOpen, setLoadingOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState<CreditPackage | null>(null);
+  const [selectedCheckoutUrl, setSelectedCheckoutUrl] = useState<string>('');
 
   // Carregar pacotes de créditos
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function NoCreditsModal({
   const handleCreditsPurchase = (packageId: string) => {
     const pkg = creditPackages.find(p => p.id === packageId);
     if (pkg?.caktoCheckoutUrl) {
-      setSelectedPackage(pkg);
+      setSelectedCheckoutUrl(pkg.caktoCheckoutUrl);
       setLoadingOpen(true);
       
       // Simular carregamento por 2 segundos
@@ -252,7 +252,7 @@ export default function NoCreditsModal({
                           }}
                         >
                           <ShoppingCart className="w-4 h-4 mr-2" />
-                          Comprar {pkg.name}
+                          Comprar
                         </Button>
                       </CardContent>
                     </Card>
@@ -295,7 +295,7 @@ export default function NoCreditsModal({
       <CaktoCheckoutModal
         open={checkoutOpen}
         onClose={() => setCheckoutOpen(false)}
-        checkoutUrl={selectedPackage?.caktoCheckoutUrl || ''}
+        checkoutUrl={selectedCheckoutUrl}
         onSuccess={handleCheckoutSuccess}
       />
 
