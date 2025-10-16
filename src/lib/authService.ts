@@ -181,7 +181,7 @@ export async function authenticatedFetch(
   };
 
   // Construir URL completa
-  const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+  const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/api') ? url.substring(4) : url}`;
   
   const response = await fetch(fullUrl, {
     ...options,
