@@ -203,20 +203,20 @@ export default function NoCreditsModal({
                   {creditPackages.map((pkg) => (
                     <Card 
                       key={pkg.id} 
-                      className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-2 hover:border-green-300 dark:hover:border-green-700"
+                      className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-2 border-gray-700 bg-gray-800 hover:border-purple-500"
                       onClick={() => handleCreditsPurchase(pkg.id)}
                     >
                       <CardHeader className="text-center pb-2">
                         <div className="flex items-center justify-center gap-2 mb-2">
                           <Coins className="h-6 w-6 text-green-500" />
-                          <CardTitle className="text-lg text-gray-800 dark:text-gray-200">
+                          <CardTitle className="text-lg text-white">
                             {pkg.name}
                           </CardTitle>
                         </div>
-                        <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+                        <div className="text-3xl font-bold text-green-400">
                           {pkg.currency === 'BRL' ? 'R$' : '$'}{pkg.price}
                         </div>
-                        <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
+                        <CardDescription className="text-sm text-gray-300">
                           {pkg.description}
                         </CardDescription>
                       </CardHeader>
@@ -225,7 +225,7 @@ export default function NoCreditsModal({
                         <div className="space-y-3">
                           <div className="flex items-center justify-center gap-2">
                             <Coins className="h-4 w-4 text-green-500" />
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <span className="text-sm font-medium text-gray-300">
                               {pkg.credits} créditos
                             </span>
                           </div>
@@ -238,14 +238,14 @@ export default function NoCreditsModal({
                             </div>
                           )}
 
-                          <div className="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                          <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
                             <CreditCard className="h-3 w-3" />
                             <span>Pagamento seguro</span>
                           </div>
                         </div>
                         
                         <Button 
-                          className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white"
+                          className="w-full mt-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleCreditsPurchase(pkg.id);
