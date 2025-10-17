@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, Download, Filter, RefreshCw } from 'lucide-react';
+import { CalendarIcon, Download, Filter, RefreshCw, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
@@ -52,6 +52,7 @@ interface AnalyticsData {
 const PageAnalytics: React.FC = () => {
   const { pageId } = useParams<{ pageId: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -150,9 +151,21 @@ const PageAnalytics: React.FC = () => {
     <div className="w-full max-w-full px-4 md:px-6 py-4 md:py-6 space-y-4 md:space-y-6">
       {/* Header */}
       <div className="space-y-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Estatísticas da Página</h1>
-          <p className="text-sm text-muted-foreground break-all">ID: {pageId}</p>
+        <div className="flex items-center gap-4">
+          {/* Botão de voltar - apenas para desktop */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="hidden md:flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar
+          </Button>
+          
+          <div className="flex-1">
+            <h1 className="text-2xl md:text-3xl font-bold">Estatísticas da Página</h1>
+          </div>
         </div>
         
         {/* Filtros - Mobile First */}
@@ -318,8 +331,8 @@ const PageAnalytics: React.FC = () => {
             <CardContent>
               <div className="h-32 md:h-64 flex items-end justify-start gap-1 md:gap-2 overflow-x-auto pb-2">
                 {analyticsData.dailyViews.slice(0, 30).map((day, index) => {
-                  const maxViews = Math.max(...analyticsData.dailyViews.map(d => d.count || d.views || 0));
-                  const views = day.count || day.views || 0;
+                  const maxViews = Math.max(...analyticsData.dailyViews.map(d => d.views || 0));
+                  const views = day.views || 0;
                   return (
                     <div key={index} className="flex flex-col items-center gap-1 md:gap-2 flex-shrink-0 min-w-[16px] md:min-w-[32px]">
                       <div
